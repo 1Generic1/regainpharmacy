@@ -1,0 +1,89 @@
+.App-header {
+  background-color: white;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.header-container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-top : 5px;
+  margin-bottom : 5px; 
+}
+
+.App-logo {
+  height: 10vmin;
+  pointer-events: none;
+  margin-left: 90px;
+}
+
+.header-nav ul {
+  list-style: none;
+  display: flex;
+  padding: 20px;
+  gap: 80px;
+  margin-right: 0px;
+  transition: all 0.6s ease;
+}
+
+.header-nav a {
+  text-decoration: none;
+  margin-right: 20px;
+  color: #000;
+  font-size: 20px;
+}
+
+.header-nav li:hover a {
+  color: green;
+} 
+
+.access {
+  margin-right: 90px;
+  font-size: 12px;
+}
+
+.access a {
+  text-decoration: none;
+  margin-right: 20px;
+  font-size: 16px;
+}
+
+.access-button {
+  padding: 20px 30px; /* Adjust padding as needed */
+  margin: 0 20px; /* Adjust margin between buttons */
+  border: 2px solid green;
+  background-color: green; /* Example background color */
+  color: white;
+  border-radius: 30px; /* Make the button circular */
+  text-decoration: none; /* Remove underline from links */
+  cursor: pointer;
+  text-align: center; /* Center text horizontally */
+  display: inline-block; /* Ensure button is inline */
+  transition: all 0.6s ease;
+}
+
+.signup-button {
+  border: 2px solid green;
+  background-color: white;
+  padding: 20px 30px;
+  color: green;
+}
+
+.signup-button:hover {
+  background-color: green; /* Darker shade of the background color on hover */
+  color : white;
+}
+
+.login-button:hover {
+  background-color: white;
+  color: green;
+}

@@ -1,0 +1,175 @@
+.main-section-6 {
+    background-color: white; /* Light background color */
+    padding: 60px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    height : auto;
+}
+
+.text-container {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 40px;
+    z-index: 1;
+}
+
+.text-container h1 {
+    font-size: 60px; /* Adjust size as needed */
+    color: #002617;
+    font-weight: 700;
+    font-family: 'Bricolage Grotesque';
+
+}
+
+.text-container h2 {
+    font-size: 1.5rem; /* Adjust size as needed */
+    color: #010c07;
+    font-weight: 400;
+    font-family: 'Bricolage Grotesque';
+}
+
+
+  .review-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 980px; /* Adjust height as needed */
+    margin-top: 20px;
+  }
+  
+
+.review-card {
+    background-color: black; /* Green background */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 45px 45px rgb(29, 78, 29);
+    height: 50%;
+    max-width: 600px;
+    margin-top: 20px;
+    transform: perspective(600px) rotateX(10deg);
+    text-align: left;
+    color: white;
+    z-index: 1;
+    margin-left: auto;
+}
+
+.review-card p {
+    margin: 0;
+    font-size: 1.4rem; /* Adjust size as needed */
+    line-height: 1.6;
+    padding-bottom: 20px;
+}
+
+.authors {
+    padding-bottom: 0px;
+    font-size: 4rem;
+    font-weight: bolder;
+}
+
+
+
+  .stetoscope-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 40%;
+    height: 100%; /* Ensure it fits within the review-container */
+    position: relative;
+
+  }
+  
+  .stetoscope-image {
+    width: 600px; /* Adjust size as needed */
+    height: 100%;
+    z-index: 1;
+  }
+
+  .avater {
+    background-color: black;
+    color: #00b041;
+    height: 150px;
+    padding: 20px;
+  }
+
+  .quote {
+    padding-bottom: 25px;
+    color: greenyellow;
+  }
+
+  .button-container {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .prev-button, .next-button {
+    padding: 5px 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 4rem;
+    transition: background-color 0.3s;
+  }
+  
+  .prev-button:hover, .next-button:hover {
+    background-color: green; /* Darker green on hover */
+  }
+
+  .left-svg {
+    position: absolute;
+    top: 0;
+    left: -43%;
+    z-index: 0; /* Adjust z-index to layer correctly */
+    width: 70%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden;
+    /* filter: drop-shadow(40px 20px 40px rgba(46, 63, 46, 0.3)); 
+    transform: rotateX(10deg) rotateY(5deg); */
+
+}
+
+.svg-layer-1,
+.svg-layer-2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.svg-layer-1 {
+  z-index: 1; /* Ensure this layer is on top */
+}
+
+.svg-layer-2 {
+    filter: drop-shadow(10px 10px 10px rgba(46, 63, 46, 0.3)); /* Add shadow for 3D effect */
+    transform: translate(5px, 5px); /* Slight offset for 3D look */
+    z-index: 0; 
+}
+
+.right-svg {
+    position: absolute;
+    bottom: 0;
+    right: -40%;
+    height:100%;
+    width:70%;
+    z-index: 0; /* Adjust z-index to layer correctly */
+    filter: drop-shadow(40px 20px 40px rgba(46, 63, 46, 0.3)); /* Add shadow for 3D effect */
+    transform: rotateX(10deg) rotateY(120deg);
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*filter: drop-shadow(40px 20px 40px rgba(46, 63, 46, 0.3)); 
+  transform: rotateX(10deg) rotateY(5deg); */
+  opacity: 0.6;
+}

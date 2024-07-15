@@ -1,0 +1,130 @@
+.main-section-5 {
+  background-color: white; /* Light background color */
+  padding: 10px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background bubble pattern */
+.main-section-5::before,
+.main-section-5::after {
+  content: '';
+  position: absolute;
+  width: 200px; /* Adjust size as needed */
+  height: 200px; /* Adjust size as needed */
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  z-index: 1;
+  animation: float 6s ease-in-out infinite;
+}
+
+.main-section-5::before {
+  top: 20%;
+  left: 10%;
+}
+
+.main-section-5::after {
+  bottom: 20%;
+  right: 10%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.head h1 {
+  font-size: 60px; /* Adjust as needed */
+  color: #002617;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: 'Bricolage Grotesque';
+}
+
+.head h2 {
+  font-size: 1.7rem; /* Adjust as needed */
+  color: #010c07;
+  font-weight: 400;
+  margin-bottom: 40px;
+  font-family: 'Bricolage Grotesque';
+  margin-left: 15%;
+  margin-right: 15%;
+  line-height: 1.8;
+}
+
+.head {
+  margin-top: 5px;
+  margin-bottom: 40px;
+  text-align:center;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-around;
+  align-content:center;
+  width: 100%;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+.image-container {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.shapeless-design {
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+  background-color: #78c967;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Shapeless design using border-radius */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(197, 193, 193, 0.1); /* Optional: Add shadow for 3D effect */
+  overflow: hidden;
+  margin-top: 40px;
+  transition: transform 0.6s; /* Transition for the flip effect */
+  transform-style: preserve-3d; /* Required for 3D transform */
+}
+
+.shapeless-design:hover {
+  transform: rotateY(180deg); /* Flip effect on hover */
+}
+
+.shapeless-design::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background-color: green;
+  backface-visibility: hidden; 
+} 
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  backface-visibility: hidden; /* Hide the back side during flip */
+}
+
+.content-image {
+  width: 100%; /* Adjust as needed */
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  backface-visibility: hidden; /* Hide the back side during flip */
+}
