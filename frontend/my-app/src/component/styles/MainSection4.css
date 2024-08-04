@@ -35,7 +35,7 @@
 }
 
 .plain_rectangle {
-  background-color: #00b041;
+  background-color: green;
   background-repeat: repeat;
   background-blend-mode: overlay;
   width: 80%; /* Adjust width as needed */

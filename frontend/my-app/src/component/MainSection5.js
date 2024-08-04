@@ -12,7 +12,7 @@ function MainSection5() {
       <h1>We've got you covered</h1>
       <h2>Whether you need your medications before tonight’s sleep, or with more customisation, the possibilities are endless.</h2>
       </div>
-      <div className="content-container">
+      <div className="content-container5">
         <div className="image-container">
           <div className="shapeless-design">
             <div className="flip-card-inner"> 
