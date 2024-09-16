@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles/AboutUs.css';
+import team1 from './styles/src_regainimages/team1.jpg';
 
 function AboutUs() {
   return (
@@ -26,12 +27,12 @@ function AboutUs() {
           <h2>Meet Our Team</h2>
           <div className="team-members">
             <div className="team-member">
-              <img src="/styles/src_regainimages/team1.jpg" alt="Team Member 1" />
+              <img src={team1} alt="Team Member 1" />
               <h3>John Doe</h3>
               <p>CEO</p>
             </div>
             <div className="team-member">
-              <img src="/styles/src_regainimages/team2.jpg" alt="Team Member 2" />
+              <img src="/styles/src_regainimages/tools.jpg" alt="Team Member 2" />
               <h3>Jane Smith</h3>
               <p>Head Pharmacist</p>
             </div>

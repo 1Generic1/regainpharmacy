@@ -1,0 +1,52 @@
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.top-section {
+    display: flex;
+    gap: 20px;
+}
+
+.collections, .messages {
+    flex: 1;
+    padding: 60px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+.messages {
+    flex: 0.3; /* Adjusts the size of the messages section relative to collections */
+}
+
+.section {
+    background-color: #fff;
+    padding: 60px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .health-overview {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.health-chart, .health-tips, .appointments {
+    flex: 1;
+    background-color: #f7f7f7;
+    padding: 40px;
+    border-radius: 8px;
+}
+

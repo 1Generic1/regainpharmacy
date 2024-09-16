@@ -1,5 +1,5 @@
 .App-header {
-  background-color: white;
+  background-color: whitesmoke;
   min-height: 10vh;
   display: flex;
   flex-direction: column;
@@ -35,14 +35,14 @@
   transition: all 0.6s ease;
 }
 
-.header-nav a {
+.header-nav a, .nav-button {
   text-decoration: none;
   margin-right: 20px;
   color: #000;
   font-size: 20px;
 }
 
-.header-nav li:hover a {
+.header-nav li:hover a, .nav-button:hover {
   color: green;
 } 
 
@@ -86,4 +86,13 @@
 .login-button:hover {
   background-color: white;
   color: green;
+}
+
+.nav-button {
+  border: none; /* Remove default border */
+  background: none;
+}
+
+.nav-button:hover {
+  color: green; /* Text color on hover */
 }

@@ -1,0 +1,95 @@
+.profile-page {
+  display: flex;
+}
+
+.sidebar {
+  background-color: #f4f4f4;
+  width: 15%;
+  /* Add your sidebar styles here */
+}
+
+.myprofile {
+  width: 85%;
+  text-align: left;
+}
+.profile-content {
+  width: 95%;
+  margin-left: 20px;
+
+}
+
+
+.profile-section, .personal-info-section, .address-section, .security-section {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-right: 20px;
+  float:left;
+  display:flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  
+}
+
+.profile-picture img {
+  width: 100%; /* Make image fit the container */
+  height: 100%; /* Make image fit the container */
+  object-fit: cover; /* Cover the area without distortion */
+}
+
+.profile-placeholder {
+  position: absolute;
+  display: flex;
+}
+
+.profile-placeholder p {
+  text-align: center;
+  margin:0;
+  z-index: 2;
+}
+
+
+.edit-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: whitesmoke;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.info-item {
+  width: 48%;
+}
+
+.info-item label {
+  font-weight: bold;
+}
+
+.security-section .info-row {
+  justify-content: flex-start;
+}
+
+

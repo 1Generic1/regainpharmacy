@@ -1,0 +1,149 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.dashboard-container {
+    display: flex;
+    flex: 1;
+}
+
+.main-content {
+    margin-left: 275px;
+    width: 85%;
+}
+
+/*
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    flex: 1;
+}
+
+.profile-overview, .recent-orders, .available-products {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-details {
+    display: flex;
+    align-items: center;
+}
+  
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.order-list, .product-list {
+    display: flex;
+    flex-direction: column;
+}
+  
+.order-item, .product-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+  
+.product-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+
+
+@media (min-width: 768px) {
+    .dashboard-main {
+      flex-direction: row;
+      gap: 20px;
+    }
+  
+    .profile-overview, .recent-orders, .available-products {
+      flex: 1;
+    }
+   
+    .dashboard-left-sidebar {
+        margin-right: 20px;
+    
+    }
+
+    .dashboard-right-sidebar {
+        flex-basis: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-left-sidebar {
+      display: none; 
+    }
+
+    .dashboard-content {
+        flex-direction: column;
+    }
+    
+    .dashboard-main {
+        margin-left: 0;
+    }
+}
+
+.dashboard-content {
+    display: flex;
+    flex: 1;
+  }
+  
+  .dashboard-left-sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    min-width: 200px;
+    border-radius: 8px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+  
+.sidebar-nav li {
+    margin-bottom: 15px;
+}
+
+.sidebar-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+}
+  
+.sidebar-nav a:hover {
+    background-color: #34495e;
+}
+
+*/

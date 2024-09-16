@@ -1,0 +1,124 @@
+/*.Leftsidebar-content {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+*/
+.Leftsidebar-content {
+    width: 12%;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 200vh;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+
+
+.Leftsidebar-content.closed {
+    transform: translateX(-250px);
+}
+
+.leftsidebarlogo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 130px;
+    height:80px;
+}
+
+.leftsidebar-nav ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+}
+
+  
+.leftsidebar-nav li {
+    margin-bottom: 15px;
+    width: 100%;
+
+}
+
+.leftsidebar-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+}
+  
+.leftsidebar-nav a:hover {
+    background-color: #34495e;
+}
+
+.icon-spacing {
+    margin-right: 10px;
+}
+
+.hamburger {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 23%;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+
+
+.Leftsidebar-content.collapsed .icon-spacing {
+    margin-right: 0; /* No margin in collapsed state */
+  }
+  
+  .Leftsidebar-content.collapsed span {
+    display: none; /* Hide text in collapsed mode */
+  }
+  
+  /* Expand/Collapse button styles */
+  .expand-collapse-btn {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    align-self: center;
+  }
+
+@media (max-width: 768px) {
+    .Leftsidebar-content {
+        transform: translateX(-350px);
+    }
+
+    .Leftsidebar-content.open {
+        transform: translateX(0);
+        width:90px;
+    }
+
+    .Leftsidebar-content.collapsed .icon-spacing {
+        margin-right: 0; /* No margin in collapsed state */
+      }
+
+    .hamburger {
+        display: block;
+    }
+}

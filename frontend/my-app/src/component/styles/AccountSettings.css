@@ -1,0 +1,108 @@
+.account-page {
+    display: flex;
+    background-color: #fff;
+    height: 140vh;
+    
+}
+
+.account-page-sidebar {
+    width: 15%;
+}
+.account-settings-content {
+    flex: 1;
+    padding: 20px;
+    width: 85%;
+    background-color: #fff
+}
+
+
+.account-settings-content h1 {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.account-content-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    height: 120vh;
+    position: relative;
+}
+
+.acc-sidebar-content {
+    width: 15%;
+    border: 1px solid #ddd;
+    height : 100%;
+    border-top-left-radius: 10px;
+}
+
+
+.acc-sidebar-content button {
+    display: block;
+    margin-bottom: 0px;
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.acc-sidebar-content button:hover {
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.acc-icon-spacing {
+    margin-right: 15px; /* Spacing between icon and text */
+}
+
+.inline-profile {
+    margin-top: 20px;
+}
+
+.inline-style:hover {
+    background-color: whitesmoke;
+}
+
+.acc-content-section {
+    width: 85%;
+    left: 230px;
+    border: 1px solid #ddd;
+    position: absolute;
+    height: 120vh;
+}
+
+.acc-profile-section, .acc-security-section {
+    padding: 20px;
+    border-top-right-radius: 10px;
+    height: 704px;
+}
+
+.acc-profile-section h2, .acc-security-section h2 {
+    margin-bottom: 10px;
+}
+
+.delete-account-button {
+    position: absolute;
+    bottom: 500px; /* Ensure the button is at the bottom of the page */
+    width: 15%;
+}
+
+.delete-account {
+    color: red !important;          /* White text for contrast */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;           /* Make button fill container width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-account:hover {
+    color: darkred !important; /* Darken the red on hover */
+}

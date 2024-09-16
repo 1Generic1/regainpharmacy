@@ -17,7 +17,7 @@
     height: 2%;
     z-index: 0;
     bottom: 0;
-    left: -8%;
+    left: -8.8%;
     overflow: hidden;
     /*top: -929px; */
     transform: translateY(60%);
@@ -219,8 +219,9 @@ body.dark-mode .quicklink ul li a:hover {
 
 .footer-bottom {
     text-align: center;
-    margin-top: 20px;
-    padding-bottom: 20px;
+    background-color: #729762;
+    margin-top: -5px;
+    z-index: 2;
   }
   
   .footer-bottom p {

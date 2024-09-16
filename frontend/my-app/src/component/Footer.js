@@ -3,6 +3,7 @@ import './styles/Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faInstagram, faLinkedin} from '@fortawesome/free-brands-svg-icons';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function MainSection10() {
   const [darkMode, setDarkMode] = useState(false);
@@ -55,12 +56,11 @@ function MainSection10() {
           <div className="quicklink">
             <h2> Quick Links</h2>
             <ul>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/services">Our Services</a></li>
-              <li><a href="/products">Products</a></li>
-              <li><a href="/faq">FAQ</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/blog">Blog</a></li>
+              <li><Link to="/aboutus">About Us</Link></li>
+              <li><Link to="/">Products/Services</Link></li>
+              <li><Link to="/#faq-section">FAQs</Link></li>
+              <li><Link to="/">Contact</Link></li>
+              <li><Link to="/">Blog</Link></li>
             </ul>
             <div className="darkmode-toggle">
               <button onClick={toggleDarkMode}> 
@@ -70,7 +70,12 @@ function MainSection10() {
             </div>
           </div>
       </div>
+      <div className="footer-bottom">
+          <p><a href="#privacy">Privacy</a> | <a href="#terms">Terms & Conditions</a></p>
+          <p>Copyright &copy; 2024 Your Pharmacy. All rights reserved.</p>
+        </div>
       </footer>
+      
     );
   }
   

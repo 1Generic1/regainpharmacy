@@ -1,48 +1,87 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './component/Header.js';
-import MainSection1 from './component/MainSection1.js';
-import MainSection2 from './component/MainSection2.js';
-import MainSection3 from './component/MainSection3.js';
-import MainSection4 from './component/MainSection4.js';
-import MainSection5 from './component/MainSection5.js';
-import MainSection6 from './component/MainSection6.js';
-import MainSection7 from './component/MainSection7.js';
-import MainSection8 from './component/MainSection8.js';
-import MainSection9 from './component/MainSection9.js';
+import Home from './component/Home.js';
 import Footer from './component/Footer.js';
 import AboutUs from './component/AboutUs.js';
+import ScrollToTop from './component/ScrollToTop';
+import SignUp from './component/SignUp';
+import Success from './component/Success'
+import Login from './component/Login';
+import Dashboard from './component/Dashboard';
+import PrivateRoute from './component/PrivateRoute';
+import Profile from './component/Profile';
+import AccountSettings from './component/AccountSettings';
+import AccProfile from './component/Profile1';
+import SecuritySettings from './component/SecuritySettings';
 
-function Home() {
-  return (
-    <>
-      <MainSection1 />
-      <MainSection2 />
-      <MainSection3 />
-      <MainSection4 />
-      <MainSection5 />
-      <MainSection6 />
-      <MainSection7 />
-      <MainSection8 />
-      <MainSection9 />
-    </>
-  );
-}
 
 function App() {
+  const location = useLocation();
+
+  // Check if the current path is the signup page
+  const isSignUpOrLoginPage = location.pathname === '/signup' ||
+  location.pathname === '/login' || 
+  location.pathname === '/dashboard' || 
+  location.pathname === '/success' ||
+  location.pathname === '/profile' ||
+  location.pathname === '/account-settings' ||
+  location.pathname === '/account-profile' ||
+  location.pathname === '/SecuritySettings'
+
+
   return (
       <div className="App">
-        <Header />
+        <ScrollToTop /> {/** to scroll to the top when each page is clicked on e.g aboutus is clicked from the homepage */}
+        {!isSignUpOrLoginPage && <Header />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Aboutus" element={<AboutUs />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+         />
+         <Route
+            path="/account-settings"
+            element={
+              <PrivateRoute>
+                <AccountSettings  />
+              </PrivateRoute>
+            }
+         />
+          <Route
+            path="/account-profile"
+            element={
+              <PrivateRoute>
+                <AccProfile />
+              </PrivateRoute>
+            }
+         />
+          <Route
+            path="/SecuritySettings"
+            element={
+              <PrivateRoute>
+                <SecuritySettings />
+              </PrivateRoute>
+            }
+         />
         </Routes>
-        <Footer />
-        <div className="footer-bottom">
-          <p><a href="#privacy">Privacy</a> | <a href="#terms">Terms & Conditions</a></p>
-          <p>Copyright &copy; 2024 Your Pharmacy. All rights reserved.</p>
-        </div>
+        {!isSignUpOrLoginPage && <Footer />}
       </div>
   );
 }
