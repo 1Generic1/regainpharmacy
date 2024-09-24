@@ -74,6 +74,11 @@
   font-size: 16px;
 }
 
+.edit-btn:hover {
+  background-color: #2c3e50;
+  color:white;
+}
+
 .info-row {
   display: flex;
   justify-content: space-evenly;

@@ -1,0 +1,25 @@
+.custom-select {
+    width: 100%; /* Adjust as needed */
+  }
+  
+  .custom-select .react-select__control {
+    padding: 5px 12px; /* Adjust the padding */
+  }
+  
+  .custom-select .react-select__value-container {
+    padding: 5px 10px; /* Adjust the padding */
+  }
+  
+  .custom-select .react-select__control {
+    border: 1px solid red ;/* Default border color */
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  .custom-select .react-select__control:hover {
+    border-color: #4CAF50; /* Border color on hover */
+  }
+  
+  .custom-select .react-select__control--is-focused {
+    border-color: #4CAF50; /* Border color when focused */
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2); /* Focus shadow */
+  }
