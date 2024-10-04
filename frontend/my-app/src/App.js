@@ -14,20 +14,26 @@ import Profile from './component/Profile';
 import AccountSettings from './component/AccountSettings';
 import AccProfile from './component/Profile1';
 import SecuritySettings from './component/SecuritySettings';
-
+import Products from './component/Products';
+import AdminRoute from './component/AdminRoute'
+import AdminDashboard from './component/AdminDashboard';
+import AdminProductPage from './component/AdminProductPage';
+import AdminCategoryPage from './component/AdminCategoryPage';
 
 function App() {
   const location = useLocation();
 
-  // Check if the current path is the signup page
+  // Check if the current path and remove header
   const isSignUpOrLoginPage = location.pathname === '/signup' ||
   location.pathname === '/login' || 
   location.pathname === '/dashboard' || 
   location.pathname === '/success' ||
   location.pathname === '/profile' ||
+  location.pathname === '/Products' ||
   location.pathname === '/account-settings' ||
   location.pathname === '/account-profile' ||
-  location.pathname === '/SecuritySettings'
+  location.pathname === '/SecuritySettings' ||
+  location.pathname === '/admin'
 
 
   return (
@@ -80,6 +86,22 @@ function App() {
               </PrivateRoute>
             }
          />
+         <Route
+            path="/Products"
+            element={
+              <PrivateRoute>
+                <Products />
+              </PrivateRoute>
+            }
+         />
+         <Route path="/admin" 
+           element={
+             <AdminRoute>
+                <AdminDashboard />
+             </AdminRoute>}>
+             <Route path="products" element={<AdminProductPage />} />
+           <Route path="categories" element={<AdminCategoryPage />} />
+         </Route>
         </Routes>
         {!isSignUpOrLoginPage && <Footer />}
       </div>

@@ -1,9 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Modal from './Modal';
 import './styles/SecuritySettings.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import EditEmailModal from './EditEmailModal';
+import EditUsernameModal from './EditUsernameModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 const SecuritySettings = () => {
+
+  const [user, setUser] = useState({
+   email: 'N/A',
+   userName: 'N/A'
+  })
+  
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
+          
+        // Check if the token exists
+        if (!token) {
+          console.error('No token found');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:3001/api/users/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}` 
+          },
+        });
+        const data = response.data;
+        setUser({
+          email: data.email || 'N/A',
+          userName: data.userName || 'N/A'
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  },[]);
+
+  // State to control the email modal
+  const [isEmailModalOpen, setEmailModalOpen] = useState(false);
+
+  const openEmailModal = () => setEmailModalOpen(true); // Open address modal
+  const closeEmailModal = () => setEmailModalOpen(false); // Close address modal
+
+  const [isUsernameModalOpen, setUsernameModalOpen] = useState(false);
+
+  const openUsernameModal = () => setUsernameModalOpen(true); // Open username modal
+  const closeUsernameModal = () => setUsernameModalOpen(false); // Close username modal
+
+
+  const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
+
+  const openPasswordModal = () => setPasswordModalOpen(true);
+  const closePasswordModal = () => setPasswordModalOpen(false);
+
+  const updateUserData = (newData) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...newData 
+    }));
+  };
+
   return (
     <div className="security-settings-page">
       <div className="security-settings">
@@ -21,12 +86,21 @@ const SecuritySettings = () => {
                 <p>Manage your account's email address</p>
               </div>
               <div className="s-info-value">
-                <p>user@gmail.com</p>
+                <p>{user.email}</p>
               </div>
               <div className="s-info-action">
-                <button className="s-edit-btn">
+                <button className="s-edit-btn" onClick={openEmailModal}>
                   <FontAwesomeIcon icon={faEdit} /> Edit
                 </button>
+                {isEmailModalOpen && (
+                  <Modal onClose={closeEmailModal}>
+                     <EditEmailModal
+                       onClose={closeEmailModal}
+                       user={user}
+                       updateUserData={updateUserData }
+                     />
+                  </Modal>
+                )}
               </div>
             </div>
 
@@ -37,12 +111,21 @@ const SecuritySettings = () => {
                 <p>Changes will modify and update your username</p>
               </div>
               <div className="s-info-value">
-                <p>@username</p>
+                <p>@{user.userName}</p>
               </div>
               <div className="s-info-action">
-                <button className="s-edit-btn">
+                <button className="s-edit-btn" onClick={openUsernameModal}>
                   <FontAwesomeIcon icon={faEdit} /> Edit
                 </button>
+                {isUsernameModalOpen && (
+                  <Modal onClose={closeUsernameModal}>
+                     <EditUsernameModal
+                       onClose={closeUsernameModal}
+                       user={user}
+                       updateUserData={updateUserData}
+                     />
+                  </Modal>
+                )}
               </div>
             </div>
 
@@ -55,9 +138,18 @@ const SecuritySettings = () => {
               <div className="s-info-value">
               </div>
               <div className="s-info-action">
-                <button className="s-edit-btn">
+                <button className="s-edit-btn" onClick={openPasswordModal}>
                   <FontAwesomeIcon icon={faEdit} /> Change Password
                 </button>
+                {isPasswordModalOpen && (
+                  <Modal onClose={closePasswordModal}>
+                     <ChangePasswordModal
+                       onClose={closePasswordModal}
+                       user={user}
+                       updateUserData={updateUserData }
+                     />
+                  </Modal>
+                )}
               </div>
             </div>
           </div>

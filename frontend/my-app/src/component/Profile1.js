@@ -3,15 +3,17 @@ import './styles/Profile.css';
 import axios from 'axios';
 import Modal from './Modal';
 import EditProfilePicture from './EditProfilePicture';
+import EditPersonalInfoModal from './EditPersonalInfoModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-
+import EditAddressModal from './EditAddressModal';
 const AccProfile = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPersonalInfoModalOpen, setIsPersonalInfoModalOpen] = useState(false);
   const [profilePictureUrl, setProfilePictureUrl] = useState(''); // State to store the user's profile picture URL
   const [previewUrl, setPreviewUrl] = useState(''); // State to handle live preview
-
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
   // Open/Close Modal
   const openModal = () => setIsModalOpen(true);
@@ -19,6 +21,17 @@ const AccProfile = () => {
     setIsModalOpen(false);
     setPreviewUrl(''); // Clear the preview URL when modal is closed
   };
+
+  // Function to update profile data in parent state
+const updateUserData = (newData) => {
+  setUserData(newData);
+};
+  
+  const openPersonalInfoModal = () => setIsPersonalInfoModalOpen(true); // Open personal info modal
+  const closePersonalInfoModal = () => setIsPersonalInfoModalOpen(false); 
+
+  const openAddressModal = () => setIsAddressModalOpen(true); // Open address modal
+  const closeAddressModal = () => setIsAddressModalOpen(false); // Close address modal
   
   const [userData, setUserData] = useState({
     firstName: 'N/A',
@@ -26,6 +39,8 @@ const AccProfile = () => {
     email: 'N/A',
     userName: 'N/A',
     phone: 'N/A',
+    gender: 'N/A',
+    bio: 'N/A',
     country: 'N/A',
     city: 'N/A',
     postalCode: 'N/A',
@@ -57,6 +72,8 @@ const AccProfile = () => {
           email: userData.email || 'N/A',
           userName: userData.userName || 'N/A',
           phone: userData.phone || 'N/A',
+          gender: userData.gender || 'N/A',
+          bio: userData.bio || 'N/A',
           country: userData.country || 'N/A',
           city: userData.city || 'N/A',
           postalCode: userData.postalCode || 'N/A',
@@ -81,7 +98,6 @@ const AccProfile = () => {
     setProfilePictureUrl(newProfilePictureUrl); // Update the parent with new profile picture
     setPreviewUrl(''); // Clear preview after successful upload
   };
-
   
 
   return (
@@ -144,9 +160,28 @@ const AccProfile = () => {
               <p>{userData.phone}</p>
             </div>
           </div>
-          <button className="edit-btn">
+          <div className="info-row">
+            <div className="info-item">
+              <label>Gender</label>
+              <p>{userData.gender}</p>
+            </div>
+            <div className="info-item">
+              <label>Bio</label>
+              <p>{userData.bio}</p>
+            </div>
+          </div>
+          <button className="edit-btn" onClick={openPersonalInfoModal} > 
           <FontAwesomeIcon icon={faEdit} /> Edit
           </button>
+          {isPersonalInfoModalOpen && (
+              <Modal onClose={closePersonalInfoModal}>
+                <EditPersonalInfoModal
+                  onClose={closePersonalInfoModal}
+                  userData={userData}
+                  updateUserData={updateUserData}
+                />
+              </Modal>
+            )}
         </div>
 
         <div className="address-section">
@@ -171,19 +206,18 @@ const AccProfile = () => {
               <p>{userData.additionalInfo}</p>
             </div>
           </div>
-          <button className="edit-btn">
+          <button className="edit-btn" onClick={openAddressModal}>
             <FontAwesomeIcon icon={faEdit} /> Edit
           </button>
-        </div>
-
-        <div className="security-section">
-          <h3>Security</h3>
-          <div className="info-row">
-            <button className="edit-btn">Change Email</button>
-          </div>
-          <div className="info-row">
-            <button className="edit-btn">Change Password</button>
-          </div>
+          {isAddressModalOpen && (
+              <Modal onClose={closeAddressModal}>
+                <EditAddressModal
+                  onClose={closeAddressModal}
+                  userData={userData}
+                  updateUserData={updateUserData}
+                />
+              </Modal>
+            )}
         </div>
       </div>
       </div>

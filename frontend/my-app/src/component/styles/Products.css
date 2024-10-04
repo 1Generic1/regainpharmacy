@@ -1,0 +1,253 @@
+.products-header {
+    width: 85%;
+    margin-left : 15%;
+    margin-bottom: 15px;
+
+
+}
+
+.products-sidebar {
+    width: 10% !important;
+}
+
+.products-page {
+  width: 100%;
+}
+
+.product-page-content {
+    width: 84%;
+    margin-left : 15%;
+    border-radius: 10px;
+}
+.flash-sales {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color:rgb(86, 113, 141);
+    padding: 2rem;
+    margin-bottom: 15px;
+    height: 200px;
+   
+}
+
+.flash-sales-content {
+    flex: 2;
+}
+  
+.flash-sales-image {
+    flex: 2;
+    margin: 0;
+}
+  
+.flash-sales-image img {
+    width: 300px; /* You can adjust the max width of the image */
+    height: 250px;
+    margin: 0;
+}
+  
+
+.flash-sales-content h2 {
+    font-size: 40px;
+    margin-bottom: 1rem;
+}
+
+.flash-sales-content p {
+    font-size: 20px;
+}
+  
+.flash-sale-buttons {
+    margin-top: 1rem;
+}
+
+.pdt-btn-buy-now, .pdt-btn-see-all {
+    padding: 0.75rem 2rem;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-right: 1rem;
+    font-size: 1rem;
+}
+  
+.pdt-btn-see-all {
+    background-color: #2c3e50;
+}
+  
+.pdt-btn-buy-now:hover, .pdt-btn-see-all:hover {
+    background-color: #3e8e41;
+}
+
+.delivery-section {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+  
+.delivery-section h2 {
+    font-size: 20px;
+    text-align: left;
+}
+  
+.delivery-section p {
+    font-size: 18px;
+    color: #333;
+}
+
+.delivery-content {
+    background-color:rgb(177, 198, 219);
+    text-align: left;
+    padding: 5px 30px;
+}
+
+.categories-section {
+    padding: 2rem;
+    background-color: #fff;
+    margin-bottom: 2rem;
+}
+  
+.categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categories-list {
+    display: flex;
+    overflow-x: scroll;
+}
+
+.category-item {
+    display: inline-block;
+    text-align: center;
+    margin-right: 1.5rem;
+}
+
+.category-item:hover {
+    transform: translateY(6px);
+}
+
+.category-icon {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.category-button {
+  background: none; /* Removes default button styling */
+  border: none; /* Removes border */
+  cursor: pointer; /* Changes cursor to pointer */
+  padding: 0; /* Removes padding */
+}
+
+.products-section {
+    padding: 2rem;
+    background-color: #fff;
+}
+
+
+.products-section h2{
+    text-align: left;
+    margin-bottom: 1rem; /* Add some space below the heading */
+    font-size: 24px; /* You can adjust this to your liking */
+    font-weight: bold;
+    color: #333;
+}
+
+  
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-item {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.3s;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+.product-item:hover {
+    transform: translateY(-10px);
+}
+
+.product-image-container {
+    position: relative;
+}
+
+.btn-like {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+  
+.btn-like:hover {
+    background-color: rgb(151, 43, 43);
+    color: #fff;
+}
+
+.product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+
+  
+.product-info p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 1rem;
+}
+  
+.product-pricing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.rating {
+    font-size: 14px;
+    color: #f39c12;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.btn-add-cart {
+    padding: 0.5rem 1rem;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+  
+.btn-add-cart:hover {
+    background-color: #4CAF50;
+    opacity: 0.9;
+}

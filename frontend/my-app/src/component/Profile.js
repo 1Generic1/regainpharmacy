@@ -27,6 +27,8 @@ const Profile = () => {
     email: 'N/A',
     userName: 'N/A',
     phone: 'N/A',
+    gender: 'N/A',
+    bio: 'N/A',
     country: 'N/A',
     city: 'N/A',
     postalCode: 'N/A',
@@ -58,6 +60,8 @@ const Profile = () => {
           email: userData.email || 'N/A',
           userName: userData.userName || 'N/A',
           phone: userData.phone || 'N/A',
+          gender: userData.gender || 'N/A',
+          bio: userData.bio || 'N/A',
           country: userData.country || 'N/A',
           city: userData.city || 'N/A',
           postalCode: userData.postalCode || 'N/A',
@@ -148,6 +152,16 @@ const Profile = () => {
               <p>{userData.phone}</p>
             </div>
           </div>
+          <div className="info-row">
+            <div className="info-item">
+              <label>Gender</label>
+              <p>{userData.gender}</p>
+            </div>
+            <div className="info-item">
+              <label>Bio</label>
+              <p>{userData.bio}</p>
+            </div>
+          </div>
         </div>
 
         <div className="address-section">
@@ -171,16 +185,6 @@ const Profile = () => {
               <label>Additional Info</label>
               <p>{userData.additionalInfo}</p>
             </div>
-          </div>
-        </div>
-
-        <div className="security-section">
-          <h3>Security</h3>
-          <div className="info-row">
-            <button className="edit-btn">Change Email</button>
-          </div>
-          <div className="info-row">
-            <button className="edit-btn">Change Password</button>
           </div>
         </div>
       </div>

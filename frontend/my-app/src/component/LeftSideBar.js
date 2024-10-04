@@ -53,7 +53,7 @@ const LeftSidebar = () => {
             <li><a href="/dashboard"><FontAwesomeIcon icon={faTachometerAlt} className="icon-spacing" /> {isSidebarExpanded && "Dashboard"}</a></li>
             <li><a href="/profile"><FontAwesomeIcon icon={faUser} className="icon-spacing" /> {isSidebarExpanded && "Profile"}</a></li>
             <li><a href="/orders"><FontAwesomeIcon icon={faClipboardList} className="icon-spacing" /> {isSidebarExpanded && "Orders"}</a></li>
-            <li><a href="/products"><FontAwesomeIcon icon={faBoxOpen} className="icon-spacing" /> {isSidebarExpanded && "Products"}</a></li>
+            <li><a href="/Products"><FontAwesomeIcon icon={faBoxOpen} className="icon-spacing" /> {isSidebarExpanded && "Products"}</a></li>
             <li><a href="/notification"><FontAwesomeIcon icon={faBell} className="icon-spacing" /> {isSidebarExpanded && "Notification"}</a></li>
             <li><a href="/messages"><FontAwesomeIcon icon={faEnvelope} className="icon-spacing" /> {isSidebarExpanded && "Messages"}</a></li>
             <li><a href="/appointments"><FontAwesomeIcon icon={faCalendarCheck} className="icon-spacing" /> {isSidebarExpanded && "Appointments"}</a></li>

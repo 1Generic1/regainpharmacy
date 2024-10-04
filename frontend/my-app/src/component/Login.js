@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
-
 const Login = () => {
   const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,8 +31,18 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data.token) // Save token in local storage
-        navigate('/dashboard');
+        // Save token and user info in local storage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify({
+          id: data.user._id,
+          role: data.user.role,
+        }));
+        // Check the user's role and navigate accordingly
+        if (data.user && data.user.role === "admin") {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         setError(data.errors[0].msg);
       }

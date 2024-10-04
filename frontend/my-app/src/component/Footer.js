@@ -23,7 +23,7 @@ function MainSection10() {
     return (
       <footer className={`main-section-10 ${darkMode ? 'dark' : ''}`}>
         <div className="footer-blob">
-            <div classname="footersvg">
+            <div className="footersvg">
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <path fill="#729762" d="M36.6,-38.1C48.6,-33.5,60.5,-23.1,63.6,-10.4C66.8,2.2,61.2,17.2,51,24.2C40.7,31.1,25.6,30.1,14.1,30.8C2.6,31.6,-5.4,34.1,-14.1,33.3C-22.8,32.4,-32.2,28.2,-35.6,21.1C-39.1,14,-36.6,4,-39.2,-11.3C-41.7,-26.7,-49.4,-47.3,-43.7,-53C-38,-58.7,-19,-49.4,-3.4,-45.4C12.3,-41.3,24.6,-42.6,36.6,-38.1Z" transform="translate(100 100)" />
               </svg>
