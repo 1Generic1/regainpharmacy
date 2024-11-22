@@ -5,7 +5,7 @@ import { faFacebook, faTwitter, faInstagram, faLinkedin} from '@fortawesome/free
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-function MainSection10() {
+function Footer() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -79,4 +79,4 @@ function MainSection10() {
     );
   }
   
-  export default MainSection10;
+  export default Footer;

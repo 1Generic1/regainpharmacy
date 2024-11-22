@@ -91,9 +91,6 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      <div className="sidebar">
-        <LeftSidebar />
-      </div>
       <div className="myprofile">
         <h1>My Profile</h1>
         <div className="profile-content">

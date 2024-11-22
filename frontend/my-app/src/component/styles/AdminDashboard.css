@@ -1,0 +1,13 @@
+.admin-dashboard {
+  display: flex;
+}
+
+.admin-content {
+  flex: 1;
+  flex-direction: column;
+}
+
+.adminmain-content {
+  padding: 20px;
+}
+

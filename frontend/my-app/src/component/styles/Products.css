@@ -1,22 +1,17 @@
 .products-header {
-    width: 85%;
-    margin-left : 15%;
+    width: 100%;
     margin-bottom: 15px;
 
 
 }
 
-.products-sidebar {
-    width: 10% !important;
-}
 
 .products-page {
   width: 100%;
 }
 
 .product-page-content {
-    width: 84%;
-    margin-left : 15%;
+    width: 100%;
     border-radius: 10px;
 }
 .flash-sales {
@@ -27,6 +22,9 @@
     padding: 2rem;
     margin-bottom: 15px;
     height: 200px;
+    width: 90%;
+    margin-left: 50px;
+    border-radius: 15px;
    
 }
 
@@ -102,7 +100,7 @@
 }
 
 .categories-section {
-    padding: 2rem;
+    padding: 3rem;
     background-color: #fff;
     margin-bottom: 2rem;
 }
@@ -115,17 +113,29 @@
 
 .categories-list {
     display: flex;
-    overflow-x: scroll;
 }
 
 .category-item {
     display: inline-block;
     text-align: center;
     margin-right: 1.5rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 7;
 }
 
 .category-item:hover {
     transform: translateY(6px);
+    transform: scale(1.1);
+}
+
+
+.category-item.zoomed  {
+    transform: scale(1.2); /* Keeps the zoom applied on the selected category */
+}
+
+.category-item.zoomed p {
+    color : #729762;
 }
 
 .category-icon {
@@ -156,6 +166,34 @@
     color: #333;
 }
 
+
+
+.productsection-header {
+    display: flex;               /* Use Flexbox */
+    justify-content: space-between; /* Align items at both ends */
+    align-items: center;         /* Vertically center the items */
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.pdts-btn-see-all {
+    padding: 10px 10px;        /* Adjust padding for better spacing */
+    background-color: #2c3e50;      /* Dark color for the button */
+    color: #fff;                   /* White text */
+    border: none;                   /* No border */
+    border-radius: 25px;            /* Rounded corners */
+    cursor: pointer;                /* Pointer on hover */
+    font-size: 15px;                /* Font size for readability */
+    text-transform: uppercase;      /* Uppercase text */
+    /*font-weight: bold;              /* Make the text bold */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    margin-left: auto;              /* Align to the right within flex container */
+}
+
+.pdts-btn-see-all:hover {
+    background-color: #3e8e41;     /* Slightly lighter on hover */
+    transform: scale(1.2);         /* Slight zoom effect on hover */
+}
   
 .products-grid {
     display: grid;

@@ -1,4 +1,5 @@
 import './styles/AdminTopbar.css';
+//import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const AdminTopbar = () => {
   return (

@@ -4,8 +4,14 @@ import { Navigate } from 'react-router-dom';
 //for user protected route 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user')) || null;
 
-  return token ? children : <Navigate to="/login" />;
+  //return token ? children : <Navigate to="/login" />;
+  if (!token || !user || user.role !== 'user') {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
 };
 
 

@@ -11,7 +11,7 @@
 }
 */
 .Leftsidebar-content {
-    width: 12%;
+    width: 250px;
     background-color: #2c3e50;
     color: #fff;
     padding: 20px;
@@ -21,10 +21,10 @@
     align-items: center;
     text-align: left;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    height: 200vh;
+   /* position: fixed; */
+    height: auto;
     transition: transform 0.3s ease-in-out;
-    z-index: 1000;
+    z-index: 1000; 
 }
 
 

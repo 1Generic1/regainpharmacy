@@ -51,15 +51,15 @@ const LeftSidebar = () => {
         <nav className="leftsidebar-nav">
           <ul>
             <li><a href="/dashboard"><FontAwesomeIcon icon={faTachometerAlt} className="icon-spacing" /> {isSidebarExpanded && "Dashboard"}</a></li>
-            <li><a href="/profile"><FontAwesomeIcon icon={faUser} className="icon-spacing" /> {isSidebarExpanded && "Profile"}</a></li>
-            <li><a href="/orders"><FontAwesomeIcon icon={faClipboardList} className="icon-spacing" /> {isSidebarExpanded && "Orders"}</a></li>
-            <li><a href="/Products"><FontAwesomeIcon icon={faBoxOpen} className="icon-spacing" /> {isSidebarExpanded && "Products"}</a></li>
-            <li><a href="/notification"><FontAwesomeIcon icon={faBell} className="icon-spacing" /> {isSidebarExpanded && "Notification"}</a></li>
-            <li><a href="/messages"><FontAwesomeIcon icon={faEnvelope} className="icon-spacing" /> {isSidebarExpanded && "Messages"}</a></li>
-            <li><a href="/appointments"><FontAwesomeIcon icon={faCalendarCheck} className="icon-spacing" /> {isSidebarExpanded && "Appointments"}</a></li>
-            <li><a href="/cart"><FontAwesomeIcon icon={faShoppingCart} className="icon-spacing" /> {isSidebarExpanded && "Cart"}</a></li>
-            <li><a href="/delivery-tracking"><FontAwesomeIcon icon={faTruck} className="icon-spacing" /> {isSidebarExpanded && "Delivery Tracking"}</a></li>
-            <li><a href="/payments"><FontAwesomeIcon icon={faCreditCard} className="icon-spacing" /> {isSidebarExpanded && "Payments"}</a></li>
+            <li><a href="/dashboard/profile"><FontAwesomeIcon icon={faUser} className="icon-spacing" /> {isSidebarExpanded && "Profile"}</a></li>
+            <li><a href="/dashboard/orders"><FontAwesomeIcon icon={faClipboardList} className="icon-spacing" /> {isSidebarExpanded && "Orders"}</a></li>
+            <li><a href="/dashboard/Products"><FontAwesomeIcon icon={faBoxOpen} className="icon-spacing" /> {isSidebarExpanded && "Products"}</a></li>
+            <li><a href="/dashboard/notification"><FontAwesomeIcon icon={faBell} className="icon-spacing" /> {isSidebarExpanded && "Notification"}</a></li>
+            <li><a href="/dashboard/messages"><FontAwesomeIcon icon={faEnvelope} className="icon-spacing" /> {isSidebarExpanded && "Messages"}</a></li>
+            <li><a href="/dashboard/appointments"><FontAwesomeIcon icon={faCalendarCheck} className="icon-spacing" /> {isSidebarExpanded && "Appointments"}</a></li>
+            <li><a href="/dashboard/cart"><FontAwesomeIcon icon={faShoppingCart} className="icon-spacing" /> {isSidebarExpanded && "Cart"}</a></li>
+            <li><a href="/dashboard/delivery-tracking"><FontAwesomeIcon icon={faTruck} className="icon-spacing" /> {isSidebarExpanded && "Delivery Tracking"}</a></li>
+            <li><a href="/dashboard/payments"><FontAwesomeIcon icon={faCreditCard} className="icon-spacing" /> {isSidebarExpanded && "Payments"}</a></li>
             
             {/* Settings dropdown */}
             <li onClick={toggleSettingsDropdown} className="dropdown">
@@ -70,16 +70,16 @@ const LeftSidebar = () => {
               {isSidebarExpanded && isSettingsDropdownOpen && (
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="/account-settings">Account Settings</Link>
+                    <Link to="/dashboard/account-settings">Account Settings</Link>
                   </li>
                   <li>
-                    <Link to="/settings/general">General</Link>
+                    <Link to="/dashboard/settings/general">General</Link>
                   </li>
                 </ul>
               )}
             </li>
 
-            <li><a href="/support"><FontAwesomeIcon icon={faLifeRing} className="icon-spacing" /> {isSidebarExpanded && "Support"}</a></li>
+            <li><a href="/dashboard/support"><FontAwesomeIcon icon={faLifeRing} className="icon-spacing" /> {isSidebarExpanded && "Support"}</a></li>
           </ul>
         </nav>
       </div>

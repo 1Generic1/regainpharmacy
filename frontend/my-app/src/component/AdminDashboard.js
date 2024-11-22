@@ -9,7 +9,7 @@ const AdminDashboard = () => {
       <AdminSidebar />
       <div className="admin-content">
         <AdminTopbar />
-        <div className="main-content">
+        <div className="adminmain-content">
           <Outlet /> {/* This will render the nested routes */}
         </div>
       </div>

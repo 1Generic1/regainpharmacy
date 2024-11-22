@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import LeftSidebar from './LeftSideBar'; 
 import './styles/AccountSettings.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit, faTrashAlt, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
@@ -11,9 +10,6 @@ const AccountSettings = () => {
 
   return (
     <div className="account-page">
-      <div className="account-page-sidebar">
-        <LeftSidebar />
-      </div>
       <div className='account-settings-content'>
         <h1>Account Settings</h1>
         <div className='account-content-container'>

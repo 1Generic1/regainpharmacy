@@ -34,7 +34,7 @@
 
 .pim-input-group textarea {
   width: 100%; /* Full width inside the container */
-  height: 150px; /* Adjust height for better readability */
+  height: 80px; /* Adjust height for better readability */
   padding: 0.75rem; /* Padding for internal spacing */
   border: 1px solid #ddd; /* Light border for textarea */
   border-radius: 4px; /* Rounded corners */

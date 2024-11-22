@@ -18,6 +18,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Clear any previous errors
+    setError('');
+
+    // Basic validation for empty inputs
+    if (!emailOrUsername || !password) {
+      setError('Please enter both email/username and password.');
+      return;
+    }
+
 
     try {
       const res = await fetch('http://localhost:3001/api/users/login', {
@@ -39,11 +48,15 @@ const Login = () => {
         }));
         // Check the user's role and navigate accordingly
         if (data.user && data.user.role === "admin") {
-          navigate('/admin');
+          navigate('/admin');  // Navigate to admin dashboard if the role is 'admin'
+        } else if (data.user && data.user.role === "user") {
+          navigate('/dashboard');  // Navigate to user dashboard if the role is 'user'
         } else {
-          navigate('/dashboard');
+        // Optional: Handle other roles or default case if needed
+          navigate('/login'); // Redirect to login if the role is not recognized
         }
       } else {
+        // Handle the case where login failed (e.g., incorrect credentials)
         setError(data.errors[0].msg);
       }
     } catch (err) {

@@ -1,0 +1,30 @@
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ecf0f1;
+    padding: 10px 20px;
+}
+
+.admin-topbar input[type="search"] {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+}
+
+.admin-topbar-icons {
+    display: flex;
+    align-items: center;
+}
+
+.admin-topbar-icons i {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.admin-topbar-icons button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
