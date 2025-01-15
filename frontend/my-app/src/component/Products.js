@@ -1,10 +1,14 @@
 import React, {useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import DashboardHeader from './DashboardHeader';
+import SubHeader from './SubHeader';
 import flashsales from './styles/src_regainimages/doctorman.png';
 import './styles/Products.css';
 import { useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import API from "../api/api";
 
 
 
@@ -209,11 +213,49 @@ const Products = () => {
   if (categoriesLoading) return <p>Loading categories...</p>;
   if (categoriesError) return <p>{categoriesError}</p>;
 
+  
+
+  //add to cart function from the backend
+  const handleAddToCart = async (productId, quantity) => {
+    console.log("ProductId Type:", typeof productId); // Log the type of productId
+  console.log("ProductId:", productId); // Log the actual productId
+    try {
+      const token = localStorage.getItem('token'); // Assuming the JWT token is stored in localStorage
+
+      if (!token) {
+        toast.error('You need to log in first!');
+        console.error('Token not found. Please log in.');
+        return;
+      }
+      const productDetails = await API.get(`/products/${productId}`);
+      const productName = productDetails.data.name;
+      const response = await API.post('/cart/add', // Backend endpoint
+        {
+          productId, // Sending productId and quantity to the server
+          quantity,
+        },
+      );
+      toast.success(`${productName} added to cart successfully.`);
+      console.log('Item added to cart:', response.data.cart);
+    } catch (error) {
+      if (error.response) {
+        // The server responded with an error
+        console.error('Error adding item to cart:', error.response.data.message);
+        toast.error(`Error adding item to cart: ${error.response.data.message}`);
+      } else {
+        // Something went wrong on the client-side (like no internet)
+        console.error('Error adding item to cart:', error.message);
+        toast.error('Error adding item to cart. Please try again.');
+      }
+    }
+  };
+
 
   return (
     <section className="products-page">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <div className='products-header'>
-        <DashboardHeader />
+        <SubHeader />
       </div>
   <div className='product-page-content'>
   <section className="flash-sales">
@@ -291,7 +333,11 @@ const Products = () => {
               </span>
             </div>
             <div className="product-actions">
-              <button className="btn-add-cart">Add to Cart</button>
+              <button className="btn-add-cart" 
+              onClick={(e) => {
+                e.preventDefault(); // Prevent Link navigation
+                handleAddToCart(product._id, 1); // Call add to cart function
+              }} >Add to Cart</button>
             </div>
           </div>
         </div>

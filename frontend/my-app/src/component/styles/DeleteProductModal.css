@@ -21,6 +21,7 @@
 .delete-modal-actions {
     display: flex;
     justify-content: space-around;
+    margin-top: 20px;
 }
 
 .delete-modal-confirm-btn {

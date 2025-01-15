@@ -1,5 +1,7 @@
-import { Route, Routes, useLocation, matchPath } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useLocation, matchPath, useNavigate} from 'react-router-dom';
 import './App.css';
+import { jwtDecode } from 'jwt-decode'; // to check if the session is active 
 import Header from './component/Header.js';
 import Home from './component/Home.js';
 import Footer from './component/Footer';
@@ -20,9 +22,30 @@ import AdminDashboard from './component/AdminDashboard';
 import AdminProductPage from './component/AdminProductPage';
 import AdminCategoryPage from './component/AdminCategoryPage';
 import ProductDetails from './component/ProductDetails';
+import CartPage from './component/CartPage';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Token expiration check
+  const checkTokenExpiration = () => {
+    const token = localStorage.getItem('token'); // or sessionStorage if you prefer
+    if (token) {
+      const decoded = jwtDecode(token); // Correct usage of jwtDecode
+      const currentTime = Date.now() / 1000; // current time in seconds
+
+      if (decoded.exp < currentTime) {
+        // Token has expired
+        localStorage.removeItem('token'); // remove expired token
+        navigate('/login'); // redirect to login page
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkTokenExpiration();
+  }, [navigate]); // Dependency on navigate
 
   // Check if the current path and remove header
   const hideHeaderAndFooter = location.pathname === '/signup' ||
@@ -34,7 +57,7 @@ function App() {
   location.pathname === '/dashboard/account-settings' ||
   location.pathname === '/dashboard/account-profile' ||
   location.pathname === '/dashboard/SecuritySettings' ||
-  location.pathname === '/admin' || 
+  location.pathname === '/dashboard/cart' ||
   location.pathname === '/admin/products' ||
   location.pathname === '/admin/categories' ||
   matchPath('dashboard/product/:id', location.pathname) ||  // This handles dynamic route matching
@@ -74,6 +97,7 @@ function App() {
               <Route path="security-settings" element={<SecuritySettings />} />
               <Route path="products" element={<Products />} />
               <Route path="product/:id" element={<ProductDetails />} />
+              <Route path="cart" element={<CartPage />} />
          </Route>
          <Route path="/admin" 
            element={
