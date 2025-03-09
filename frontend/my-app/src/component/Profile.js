@@ -7,7 +7,7 @@ import EditProfilePicture from './EditProfilePicture';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-const Profile = () => {
+const Profile = ({ darkMode }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profilePictureUrl, setProfilePictureUrl] = useState(''); // State to store the user's profile picture URL
@@ -90,11 +90,12 @@ const Profile = () => {
   
 
   return (
-    <div className="profile-page">
+    <div className={`profile-page ${darkMode ? 'dark' : ''}`}>
       <div className="myprofile">
-        <h1>My Profile</h1>
+        
         <div className="profile-content">
-        <div className="profile-section">
+        <div className="section profile-section">
+          <h1>My Profile</h1>
           <div className="profile-picture">
             {/* Display Profile Picture or Preview */}  
             {previewUrl ? (
@@ -108,9 +109,12 @@ const Profile = () => {
             )} 
           </div>
 
-          <div className="profile-basic-info">
+          <div className="section ">
+            <div className='profile-basic-info'>
             <h3>{userData.userName}</h3>
             <p>{userData.email}</p>
+            </div>
+            
             <button className="edit-btn" onClick={openModal}>
               <FontAwesomeIcon icon={faEdit} /> Edit Profile Picture
             </button>
@@ -127,8 +131,9 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="personal-info-section">
+        <div className="section personal-info-section">
           <h3>Personal Information</h3>
+          <div className="section" >
           <div className="info-row">
             <div className="info-item">
               <label>First Name</label>
@@ -160,9 +165,11 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        </div>
 
-        <div className="address-section">
+        <div className="section address-section">
           <h3>Address</h3>
+          <div className="section">
           <div className="info-row">
             <div className="info-item">
               <label>Country</label>
@@ -182,6 +189,7 @@ const Profile = () => {
               <label>Additional Info</label>
               <p>{userData.additionalInfo}</p>
             </div>
+          </div>
           </div>
         </div>
       </div>

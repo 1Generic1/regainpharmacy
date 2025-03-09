@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom';
 import {
   faTachometerAlt, faUser, faClipboardList, faBoxOpen,
   faBell, faEnvelope, faCalendarCheck, faCog, faLifeRing,
-  faShoppingCart, faTruck, faCreditCard, faBars, faAngleRight, faAngleDown, faExpand, faCompress
+  faShoppingCart, faTruck, faCreditCard, faBars, faAngleRight, faAngleDown, faExpand, faCompress, faMoon, faSun
 } from '@fortawesome/free-solid-svg-icons';
 
-const LeftSidebar = () => {
+const LeftSidebar = ({toggleDarkMode, darkMode}) => {
+  console.log(darkMode);
   const [isSidebarOpen, setSidebarOpen] = useState(false);  // For full open/close
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);  // For expanding/collapsing within open state
   const [isSettingsDropdownOpen, setSettingsDropdownOpen] = useState(false);
@@ -34,7 +35,7 @@ const LeftSidebar = () => {
       </button>
       
       {/* Sidebar content */}
-      <div className={`Leftsidebar-content ${isSidebarOpen ? 'open' : ''} ${isSidebarExpanded ? 'expanded' : 'collapsed'}`}>
+      <div className={`Leftsidebar-content ${isSidebarOpen ? 'open' : ''} ${isSidebarExpanded ? 'expanded' : 'collapsed'}  ${darkMode ? 'dark' : ''}`}>
         
         <div className="Leftsidebarlogocontent">
           {isSidebarExpanded && <img src={RegainLogo} alt="Logo" className="leftsidebarlogo" />}
@@ -80,6 +81,17 @@ const LeftSidebar = () => {
             </li>
 
             <li><a href="/dashboard/support"><FontAwesomeIcon icon={faLifeRing} className="icon-spacing" /> {isSidebarExpanded && "Support"}</a></li>
+            <li classname="p-2">
+              {/* ✅ Dark Mode Toggle Button */}
+              {/* Dark Mode Toggle */}
+              <div className="dark-mode-toggle" onClick={toggleDarkMode}>
+                <div className={`toggle-slider ${darkMode ? "dark" : "light"}`}>
+                <div className="toggle-circle">
+                  <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
+                </div>
+               </div>
+             </div>
+            </li>
           </ul>
         </nav>
       </div>

@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import API from "../api/api";
-
+import LoadingSpinner from './Spinner';
 
 
 /*const categories = [
@@ -148,6 +148,10 @@ const Products = () => {
     return () => clearTimeout(timer);
   }, [location]);
 
+  
+  const [wishlist, setWishlist] = useState([]);
+  const safeWishlist = Array.isArray(wishlist) ? wishlist : [];
+  
   // Add state to hold products data
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -166,7 +170,8 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/products/all_products'); // Adjust URL if needed
-        setProducts(response.data.docs); // Assuming 'docs' contains paginated product data
+        const inStockProducts = response.data.docs.filter(product => product.quantity > 0);
+        setProducts(inStockProducts); // Assuming 'docs' contains paginated product data
         setLoading(false);
       } catch (err) {
         setError('Error fetching products');
@@ -191,7 +196,48 @@ const Products = () => {
     fetchProducts();
     fetchCategories();
   }, []);
-  
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const token = localStorage.getItem('token'); // JWT for authentication
+
+        if (!token) {
+          toast.error('You need to log in first!');
+          return;
+        }
+
+        const response = await API.get('/wishlist'); // Fetch the current wishlist from backend
+        console.log("Response data:", response.data);  // Log the entire response for verification
+
+            // Access the 'items' array properly
+            const items = response.data.wishlists[0]?.items;
+            console.log("Items in wishlist:", items);
+
+            // Extract product IDs and names
+            const wishlistProducts = items
+           ? items.map(item => ({
+             productId: item.productId._id,  // Assuming productId is an object with an _id
+             productName: item.productId.name  // Assuming productId contains name
+           }))
+          : [];
+
+          console.log("Wishlist products:", wishlistProducts);
+
+  // Update state with both product IDs and names
+  setWishlist(wishlistProducts);
+      } catch (error) {
+        console.error('Error fetching wishlist:', error);
+        toast.error('Error fetching wishlist. Please try again.');
+      }
+    };
+
+    fetchWishlist(); // Call to fetch the wishlist when the component mounts
+  }, []);
+
+  useEffect(() => {
+    console.log("Wishlist state:", wishlist);  // Log the state after it's updated
+}, [wishlist]);
+
   //Filter products by selected category 
   const filteredProducts = selectedCategory
     ? products.filter(product => product.category === selectedCategory)
@@ -207,10 +253,10 @@ const Products = () => {
     setSelectedCategory(null); // Fetches and resets the product list to display all
   };
 
-  if (loading) return <p>Loading products...</p>;
+ 
+  if (loading || categoriesLoading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
   
-  if (categoriesLoading) return <p>Loading categories...</p>;
   if (categoriesError) return <p>{categoriesError}</p>;
 
   
@@ -249,6 +295,41 @@ const Products = () => {
       }
     }
   };
+
+
+  const handleAddToWishlist = async (productId, productName) => {
+    try {
+      console.log('Product ID:', productId);
+      console.log('Product Name:', productName);
+      const token = localStorage.getItem('token'); // JWT for authentication
+  
+      if (!token) {
+        toast.error('You need to log in first!');
+        return;
+      }
+
+       // Check if the product already exists in the wishlist
+      const productExists = wishlist.some(item => item.productId === productId);
+
+      if (productExists) {
+        toast.info(`${productName} is already in your wishlist!`);
+        return;
+      }
+  
+      const response = await API.post(
+        '/wishlist/add',
+        { productId },
+      );
+  
+      setWishlist((prevWishlist) => [...prevWishlist, { productId, productName }]); // Save product with name
+      toast.success(`${productName} added to wishlist successfully!`);
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+      toast.error('Error adding to wishlist. Please try again.');
+      
+    }
+  };
+  
 
 
   return (
@@ -318,7 +399,16 @@ const Products = () => {
               alt={product.name}
               className="product-img"
             />
-            <button className="btn-like">❤</button>
+            <button 
+             // className="btn-like"
+              className={`wishlist-icon ${safeWishlist.includes(product._id) ? 'in-wishlist' : ''}`}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent Link navigation
+                handleAddToWishlist(product._id)}
+              }
+            >
+              ❤
+            </button>
           </div>
           <div className="product-info">
             <h3>{product.name}</h3>

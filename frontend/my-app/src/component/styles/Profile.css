@@ -22,6 +22,16 @@
   padding: 20px;
   margin-bottom: 20px;
   position: relative;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+  margin-top: 10px ;
+}
+
+.profile-basic-info {
+  background-color: none;
+  padding-left: 60px;
 }
 
 .profile-picture {
@@ -29,8 +39,8 @@
   height: 100px;
   background-color: #ccc;
   border-radius: 50%;
-  margin-right: 20px;
-  float:left;
+  margin-left: 10px;
+  margin-top: 30px;  float:left;
   display:flex;
   overflow: hidden;
   justify-content: center;
@@ -60,7 +70,7 @@
 
 .edit-btn {
   position: absolute;
-  top: 20px;
+  top: 60px;
   right: 20px;
   background-color: whitesmoke;
   color: black;
@@ -92,6 +102,43 @@
 
 .security-section .info-row {
   justify-content: flex-start;
+
 }
 
+.profile-basic-info {
+ right: 20px;
+}
 
+/* Dark Mode Styles */
+.profile-page.dark {
+  background-color: #1a1a1a; /* Dark background */
+  color: white;
+}
+
+.profile-page.dark h1,
+.profile-page.dark h3,
+.profile-page.dark p {
+  color: white;
+}
+
+.profile-page.dark-mode .profile-placeholder p {
+  color: #ccc;
+}
+
+.profile-page.dark  .section{
+  background-color: #1a1a1a; 
+  color: white;
+}
+
+.profile-page.dark .edit-btn{
+  background-color: #1a1a1a; 
+  color: white;
+}
+
+.profile-page.dark .profile-placeholder p {
+  color: #333;
+}
+
+.section  {
+  
+}

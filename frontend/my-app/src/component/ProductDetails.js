@@ -4,7 +4,9 @@ import axios from 'axios';
 import './styles/ProductDetails.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck } from '@fortawesome/free-solid-svg-icons';
-import DashboardHeader from './DashboardHeader'; // Ensure you import the DashboardHeader
+import SubHeader from './SubHeader';
+import { ToastContainer, toast } from 'react-toastify';
+import API from "../api/api";
 
 function ProductDetails() {
   const { id } = useParams(); // Get product ID from URL params
@@ -35,10 +37,42 @@ function ProductDetails() {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+  
+  //add to cart function from the backend
+  const handleAddToCart = async (productId, quantity) => {
+    console.log("ProductId Type:", typeof productId); // Log the type of productId
+  console.log("ProductId:", productId); // Log the actual productId
+    try {
+      
+      const productDetails = await API.get(`/products/${productId}`);
+      const productName = productDetails.data.name;
+      const response = await API.post('/cart/add', // Backend endpoint
+        {
+          productId, // Sending productId and quantity to the server
+          quantity,
+        },
+      );
+      toast.success(`${productName} added to cart successfully.`);
+      console.log('Item added to cart:', response.data.cart);
+    } catch (error) {
+      if (error.response) {
+        // The server responded with an error
+        console.error('Error adding item to cart:', error.response.data.message);
+        toast.error(`Error adding item to cart: ${error.response.data.message}`);
+      } else {
+        // Something went wrong on the client-side (like no internet)
+        console.error('Error adding item to cart:', error.message);
+        toast.error('Error adding item to cart. Please try again.');
+      }
+    }
+  };
 
   return (
     <div className="product-details-container">
-      <DashboardHeader />
+      <ToastContainer />
+      <div className='products-header'>
+        <SubHeader />
+      </div>
       {product ? (
         <div className="product-details">
           {/* Session 1: Main Product Image and Thumbnails */}
@@ -76,7 +110,12 @@ function ProductDetails() {
             </div>
             <div className="productpage-actions">
               <button className="pbtn-buy-now">Buy Now</button>
-              <button className="pbtn-add-cart">Add to Cart</button>
+              <button 
+                className="pbtn-add-cart"
+                onClick={ () => handleAddToCart(product._id, 1)}
+                >
+                  Add to Cart
+              </button>
               <button className="pbtn-favorite">❤️</button>
             </div>
             <p className="free-delivery">

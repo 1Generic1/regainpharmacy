@@ -18,4 +18,5 @@ API.interceptors.request.use(
 
 export default API;
 
-
+//usage
+//import API from "../api/api";

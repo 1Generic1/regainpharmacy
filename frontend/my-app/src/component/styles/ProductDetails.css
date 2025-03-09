@@ -1,13 +1,13 @@
 .product-details-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    width: 100%;
 }
 
 .product-details {
     display: flex;
     gap: 100px;
+    padding: 20px;
 }
 
 .breadcrumbs {
@@ -113,7 +113,7 @@
   }
   
 .pbtn-buy-now {
-    background-color: #4CAF50; 
+    background-color: #729762; 
     color: white;
     padding: 10px 20px;
     font-size: 1em;
@@ -129,6 +129,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
     transition: background-color 0.3s ease;
 }
 
@@ -155,7 +156,7 @@
 }
 
 .pbtn-add-cart:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #218838; /* Darker blue on hover */
 }
 
 .pbtn-favorite:hover {

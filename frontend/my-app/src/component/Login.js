@@ -41,11 +41,13 @@ const Login = () => {
 
       if (res.ok) {
         // Save token and user info in local storage
+        localStorage.setItem('userId', data.user.id);
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify({
-          id: data.user._id,
+          id: data.user.id,
           role: data.user.role,
         }));
+        console.log("✅ Stored userId:", localStorage.getItem("userId"));
         // Check the user's role and navigate accordingly
         if (data.user && data.user.role === "admin") {
           navigate('/admin');  // Navigate to admin dashboard if the role is 'admin'

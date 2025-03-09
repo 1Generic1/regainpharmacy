@@ -1,9 +1,14 @@
 import React from 'react';
 import './styles/DashboardContent.css';
 
-const DashboardContent = () => {
+const DashboardContent = ({ toggleDarkMode, darkMode }) => {
+  console.log("Dark Mode:", darkMode); 
+
+
+
   return (
-    <div className="dashboard-content">
+    /*<div className="dashboard-content"> */
+    <div className={`dashboard-content ${darkMode ? 'dark' : ''}`}>
        <div className="top-section">
           <div className="collections">
             <h2>Collections</h2>

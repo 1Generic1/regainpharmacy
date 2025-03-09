@@ -289,3 +289,19 @@
     background-color: #4CAF50;
     opacity: 0.9;
 }
+
+.wishlist-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #ccc;
+  }
+  
+  .wishlist-icon.in-wishlist {
+    color: red;
+  }
+  
+  .wishlist-icon:hover {
+    color: #f00;
+  }

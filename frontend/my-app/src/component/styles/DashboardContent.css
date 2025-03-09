@@ -4,6 +4,7 @@
     gap: 20px;
     box-sizing: border-box;
     width: 100%;
+    background-color: white;
 }
 
 .top-section {
@@ -50,3 +51,31 @@
     border-radius: 8px;
 }
 
+/* Dark Mode */
+.dashboard-content.dark{
+    background-color: #121212;
+    color: white;
+}
+
+/* Dark Mode for Collections & Messages */
+.dashboard-content.dark .collections,
+.dashboard-content.dark .messages {
+    background-color: #1e1e1e; /* Dark background */
+    color: white;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode for Sections */
+.dashboard-content.dark .section {
+    background-color: #1e1e1e;
+    color: white;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode for Health Sections */
+.dashboard-content.dark .health-chart,
+.dashboard-content.dark .health-tips,
+.dashboard-content.dark .appointments {
+    background-color: #1e1e1e;
+    color: white;
+}

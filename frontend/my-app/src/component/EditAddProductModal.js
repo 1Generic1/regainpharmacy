@@ -83,13 +83,13 @@ const EditAddProductModal = ({ onClose, refreshProductList }) => {
     formData.append('name', newProduct.name);
     formData.append('price', newProduct.price);
     formData.append('category', newProduct.category);
-    formData.append('quantity', newProduct.quantity);
+    formData.append('stock', newProduct.stock);
     formData.append('rating', newProduct.rating); 
     formData.append('image', imageFile);
     formData.append('description', newProduct.description);
 
     try {
-      const response = await axios.post('http://localhost:3001/api/products/add', formData, {
+      const response = await axios.post('http://localhost:3001/api/products/create', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -205,9 +205,9 @@ const EditAddProductModal = ({ onClose, refreshProductList }) => {
         <div className="pim-input-group">
           <input
             type="number"
-            name="quantity"
-            placeholder="Quantity"
-            value={newProduct.quantity}
+            name="stock"
+            placeholder="Stock"
+            value={newProduct.stock}
             onChange={handleInputChange}
             required
           />

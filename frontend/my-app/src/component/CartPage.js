@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import API from "../api/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BounceLoader } from "react-spinners";
 
 console.log("API Instance:", API);
 
@@ -143,8 +144,16 @@ const CartPage = () => {
       .reduce((acc, item) => acc + item.quantity * item.productId.price, 0);
   };
 
+
+
   if (loading) {
-    return <div className="loading-spinner">Loading your cart...</div>;
+    // Show Spinner while loading
+    return (
+      <div className="loading-spinner">
+        <BounceLoader color="#729762" size={50} />
+        <p>Loading your cart...</p>
+      </div>
+    );
   }
 
   if (cartItems.length === 0) {
@@ -168,7 +177,7 @@ const CartPage = () => {
   
   return (
     <>
-      <ToastContainer />
+      
       <div className="cart-page">
         <div className="cart-header">
           <h2>Your Cart</h2>

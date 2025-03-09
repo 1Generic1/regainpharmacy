@@ -5,6 +5,8 @@ import EditAddProductModal from './EditAddProductModal';
 import EditProductModal from './EditProductModal';
 import DeleteProductModal from './DeleteProductModal';
 import Modal from './Modal';
+import API from "../api/api";
+import { Link } from "react-router-dom";
 
 
 const AdminProductPage = () => {
@@ -21,10 +23,7 @@ const AdminProductPage = () => {
           console.error('No token found');
           return;
         }
-        const response = await axios.get('http://localhost:3001/api/products/all_products', {
-          headers: {
-            'Authorization': `Bearer ${token}` 
-          },
+        const response = await API.get("/products/all_products", {
           params: { page, limit: 20 },
         });
         console.log(response.data);
@@ -146,10 +145,14 @@ const AdminProductPage = () => {
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product._id}</td>
-              <td>{product.name}</td>
+              <td>
+                <Link to={`/admin/product/${product._id}`} className="view-details-link">
+                  {product.name}
+                </Link>
+              </td>
               <td>{product.price}</td>
               <td>{product.category}</td>
-              <td>{product.quantity}</td>
+              <td>{product.stock}</td>
               <td>{product.description}</td>
               <td>{product.rating}</td>
               <td>

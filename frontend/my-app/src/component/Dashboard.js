@@ -5,7 +5,7 @@ import DashboardHeader from './DashboardHeader';
 import DashboardContent from './DashboardContent';
 import './styles/Dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({ darkMode, toggleDarkMode }) => {
   const location = useLocation();
 
    // Check if we are on the main dashboard route (exact match with "/dashboard")
@@ -13,13 +13,13 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <LeftSidebar />
+      <LeftSidebar toggleDarkMode={toggleDarkMode} darkMode={darkMode}/>
       <div className="main-content">
          {/* Conditionally render DashboardHeader and DashboardContent only on the main dashboard route */}
          {isMainDashboard ? (
           <>
             <DashboardHeader />
-            <DashboardContent />
+            <DashboardContent darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           </>
         ) : (
           <Outlet />

@@ -56,6 +56,7 @@
   .delete-btn:hover {
     background-color: #d32f2f;
     color: #fff;
+    transform: scale(1.0);
   }
   
   /* Cart items */
@@ -171,6 +172,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    transform: scale(1.2);
   }
   
   .checkout-btn:hover {
@@ -355,3 +357,25 @@
     color: red;
     font-weight: bold;
   }
+
+  /* Spinner Container */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it appears above everything */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    flex-direction: column;
+  }
+  
+  .loading-spinner p {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
