@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './styles/AdminProductPage.css'
+import './styles/AdminProductPage.css';
 import EditAddProductModal from './EditAddProductModal';
 import EditProductModal from './EditProductModal';
 import DeleteProductModal from './DeleteProductModal';
+import { toast } from "react-toastify";
 import Modal from './Modal';
-import API from "../api/api";
-import { Link } from "react-router-dom";
-
+import API from '../api/api';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -23,14 +24,14 @@ const AdminProductPage = () => {
           console.error('No token found');
           return;
         }
-        const response = await API.get("/products/all_products", {
+        const response = await API.get('/products/all_products', {
           params: { page, limit: 20 },
         });
         console.log(response.data);
         setProducts(response.data.docs);
-        const {totalPages, page: currentPage, } = response.data;
-        setCurrentPage(currentPage);  // Set the current page
-        setTotalPages(totalPages);    // Set total pages from response
+        const { totalPages, page: currentPage } = response.data;
+        setCurrentPage(currentPage); // Set the current page
+        setTotalPages(totalPages); // Set total pages from response
       } catch (error) {
         console.error('Error fetching profile data:', error);
       }
@@ -39,10 +40,15 @@ const AdminProductPage = () => {
   }, [currentPage]);
 
   const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleViewImage = (imageUrl) => {
-    setSelectedImage(imageUrl);
+  const handleViewImage = (images) => {
+    if (!images || images.length === 0) {
+      console.error('No images found for this product');
+      toast.error('No images found for this product');
+      return;
+    }
+    setSelectedImage(images[0]);
     setShowImageModal(true);
   };
 
@@ -69,7 +75,7 @@ const AdminProductPage = () => {
     }
   };
 
-  //this is the edit button modal function
+  // This is the edit button modal function
   const [isEditProductOpen, setIsEditProductOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
 
@@ -79,13 +85,13 @@ const AdminProductPage = () => {
   };
   const closeEditProductModal = () => setIsEditProductOpen(false);
 
-   // Optionally refresh the product list after adding/editing a product when admin edits the product
-   const updateProductitem = (updatedProduct) => {
-    setProducts((prevProducts) => 
+  // Optionally refresh the product list after adding/editing a product when admin edits the product
+  const updateProductitem = (updatedProduct) => {
+    setProducts((prevProducts) =>
       prevProducts.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
     );
   };
-  
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
@@ -103,31 +109,80 @@ const AdminProductPage = () => {
         console.error('No token found');
         return;
       }
-      await axios.delete(`http://localhost:3001/api/products/${productToDelete._id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      await API.delete(`products/${productToDelete._id}`);
       setProducts((prevProducts) => prevProducts.filter((p) => p._id !== productToDelete._id));
+      toast.success('Product deleted successfully');
       closeDeleteModal();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Full error details:', error);
+      toast.error(
+        error.response?.data?.message || 
+        'Failed to delete product. Please check console for details.'
+      );
     }
+  };
+
+ /**const renderImageNavigation = () => {
+    const currentProduct = products.find((p) => p.images.includes(selectedImage));
+    if (!currentProduct || currentProduct.images.length <= 1) return null;
+
+    const currentIndex = currentProduct.images.indexOf(selectedImage); */
+
+    const renderImageNavigation = () => {
+      if (!selectedImage) return null;
+    
+      const currentProduct = products.find((p) => p.images?.includes(selectedImage));
+      if (!currentProduct || !currentProduct.images || currentProduct.images.length <= 1) {
+        return null;
+      }
+    
+      const currentIndex = currentProduct.images.indexOf(selectedImage);
+    
+
+    return (
+      <div className="image-navigation">
+        <button
+          onClick={() => {
+            //for it to move in circles
+            //const prevIndex = (currentIndex - 1 + currentProduct.images.length) % currentProduct.images.length;
+            //for it not to wrap back to the last image
+            const prevIndex = currentIndex - 1;
+            setSelectedImage(currentProduct.images[prevIndex]);
+          }}
+          // remove here if you want in circles
+          disabled={currentIndex === 0} // Disable if on the first image
+          className="navigation-button"
+        >
+         <FontAwesomeIcon icon={faChevronLeft} /> {/* Previous icon */}
+        </button>
+        <button
+          onClick={() => {
+            //for it to move in circles
+            //const nextIndex = (currentIndex + 1) % currentProduct.images.length;
+            //for it not to wrap back to the first image
+            const nextIndex = currentIndex + 1;
+            setSelectedImage(currentProduct.images[nextIndex]);
+          }}
+          disabled={currentIndex === currentProduct.images.length - 1} // Disable if on the last image
+          className="navigation-button"
+        >
+          <FontAwesomeIcon icon={faChevronRight} /> {/* Next icon */}
+        </button>
+      </div>
+    );
   };
 
   return (
     <div className="adminproduct-container">
       <h2 className="adminproduct-title">Manage Products</h2>
-      <button className="add-product-btn" onClick={openAddProductModal}>Add New Product</button>
+      <button className="add-product-btn" onClick={openAddProductModal}>
+        Add New Product
+      </button>
       {isAddProductOpen && (
         <Modal onClose={closeAddProductModal}>
-          <EditAddProductModal
-              onClose={closeAddProductModal}
-              refreshProductList={refreshProductList}
-            />
+          <EditAddProductModal onClose={closeAddProductModal} refreshProductList={refreshProductList} />
         </Modal>
-      )
-      }
+      )}
       <table className="adminproduct-table">
         <thead>
           <tr>
@@ -135,7 +190,8 @@ const AdminProductPage = () => {
             <th>Name</th>
             <th>Price</th>
             <th>Category</th>
-            <th>Quantity</th>
+            <th>Stock</th>
+            <th>Variant</th>
             <th>Description</th>
             <th>Ratings</th>
             <th>Actions</th>
@@ -153,62 +209,70 @@ const AdminProductPage = () => {
               <td>{product.price}</td>
               <td>{product.category}</td>
               <td>{product.stock}</td>
+              <td>{product.variants?.length}</td>
               <td>{product.description}</td>
               <td>{product.rating}</td>
               <td>
-                <button className="adminproduct-viewimage-btn" onClick={() => handleViewImage(product.image)} >View Image</button>
-                <button className="adminproductedit-btn"  onClick={() => openEditProductModal(product)}>Edit</button>
-                <button className="adminproductdelete-btn" onClick={() => openDeleteModal(product)}>Delete</button>
-               
+                <button className="adminproduct-viewimage-btn" onClick={() => handleViewImage(product.images)}>
+                  View Image
+                </button>
+                <button className="adminproductedit-btn" onClick={() => openEditProductModal(product)}>
+                  Edit
+                </button>
+                <button className="adminproductdelete-btn" onClick={() => openDeleteModal(product)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Image Modal */}
       {showImageModal && (
-           <div className="modal-overlay">
-             <div className="modal-content">
-               <img src={selectedImage} alt="Product" className="modal-preview-image" />
-               <button onClick={() => setShowImageModal(false)} className="modal-close">Close</button>
-             </div>
-            </div>
-            )}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <img src={selectedImage} alt="Product" className="modal-preview-image" />
+            {/* Add navigation buttons if there are multiple images */}
+            {renderImageNavigation()}
+            <button onClick={() => setShowImageModal(false)} className="modal-close">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
+      {/* Edit Product Modal */}
       {isEditProductOpen && productToEdit && (
-                  <Modal onClose={closeEditProductModal}>
-                    <EditProductModal
-                    product={productToEdit}  // Pass the selected product for editing
-                    onClose={closeEditProductModal}
-                    updateProductitem ={updateProductitem }
-                  />
-               </Modal>
-                )}
+        <Modal onClose={closeEditProductModal}>
+          <EditProductModal
+            product={productToEdit} // Pass the selected product for editing
+            onClose={closeEditProductModal}
+            updateProductitem={updateProductitem}
+          />
+        </Modal>
+      )}
 
-{isDeleteModalOpen&& productToDelete && (
-  <Modal onClose={closeDeleteModal}>
-    <DeleteProductModal
-      productToDelete={productToDelete}
-      onDelete={handleDeleteProduct}
-      onClose={closeDeleteModal}
-    />
-  </Modal>
-)}
+      {/* Delete Product Modal */}
+      {isDeleteModalOpen && productToDelete && (
+        <Modal onClose={closeDeleteModal}>
+          <DeleteProductModal
+            productToDelete={productToDelete}
+            onDelete={handleDeleteProduct}
+            onClose={closeDeleteModal}
+          />
+        </Modal>
+      )}
 
       {/* Pagination Controls */}
       <div className="pagination-controls">
-        <button 
-          onClick={goToPreviousPage} 
-          disabled={currentPage === 1}
-          className="pagination-btn"
-        >
+        <button onClick={goToPreviousPage} disabled={currentPage === 1} className="pagination-btn">
           Previous
         </button>
-        <span className="pagination-info">Page {currentPage} of {totalPages}</span>
-        <button 
-          onClick={goToNextPage} 
-          disabled={currentPage === totalPages}
-          className="pagination-btn"
-        >
+        <span className="pagination-info">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={goToNextPage} disabled={currentPage === totalPages} className="pagination-btn">
           Next
         </button>
       </div>

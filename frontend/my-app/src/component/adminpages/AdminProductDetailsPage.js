@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import API from "../../api/api";
 import ModalImage from "react-modal-image"; // Replace Lightbox with ModalImage
 import "./adminstyles/AdminProductDetailsPage.css";
+import EditProductModal from '../EditProductModal';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
@@ -40,10 +41,42 @@ const AdminProductDetailsPage = () => {
   const [showAddVariantImageForm, setShowAddVariantImageForm] = useState(false);
   const [showAddSubVariantImageForm, setShowAddSubVariantImageForm] = useState(false);
 
+  const [imagePosition, setImagePosition] = useState("first"); // Default to first position
+  const [imageIndex, setImageIndex] = useState(0); // Default index for "specific" position
+  const [newImageFile, setNewImageFile] = useState(null);
+
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState(""); // Image to display in the modal
 
+  const [isEditVariantModalOpen, setIsEditVariantModalOpen] = useState(false);
+  const [selectedVariantForEdit, setSelectedVariantForEdit] = useState(null);
+
+  const [isEditSubVariantModalOpen, setIsEditSubVariantModalOpen] = useState(false);
+  const [selectedSubVariantForEdit, setSelectedSubVariantForEdit] = useState(null);
+
+  //state for filename and image preview
+  const [fileName, setFileName] = useState("");
+  const [preview, setPreview] = useState("");
+
+  const [variantImagePreviews, setVariantImagePreviews] = useState([]);
+  const [subVariantImagePreviews, setSubVariantImagePreviews] = useState([]); // For subvariant images
+  const [productImagePreviews, setProductImagePreviews] = useState([]); // For product images
+  const [variantImagePreview, setVariantImagePreview] = useState("");
+  const [subVariantImagePreview, setSubVariantImagePreview] = useState("");
+
+  const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState(null);
+
+
+  const updateProductitem = (updatedProduct) => {
+    setProduct(prev => ({
+      ...updatedProduct,
+      variants: updatedProduct.variants || prev.variants || []
+    }));
+    setVariants(updatedProduct.variants || []); // Also update the variants state
+  };
+  
   // Fetch product details
   const fetchProductDetails = useCallback(() => {
     API.get(`/products/${productId}`)
@@ -71,10 +104,65 @@ const AdminProductDetailsPage = () => {
       e.target.value = null; // Clear the file input
       return;
     }
+    // Generate preview URLs
+    const previews = files.map((file) => URL.createObjectURL(file));
 
     console.log("Selected files:", files);
     setNewProductImage(files); // Update state with selected files
     fileInputRef.current = files; // Store files in the ref
+    setProductImagePreviews(previews);
+  };
+
+  const handleEditVariant = async (variantId) => {
+    const formData = new FormData();
+    formData.append("name", selectedVariantForEdit.name);
+    formData.append("option", selectedVariantForEdit.option);
+    formData.append("price", selectedVariantForEdit.price);
+    formData.append("stock", selectedVariantForEdit.stock);
+    formData.append("imagePosition", imagePosition);
+  
+    if (imagePosition === "specific") {
+      formData.append("imageIndex", imageIndex);
+    }
+  
+     // Append the new image file if selected
+  if (newImageFile) {
+    // Check if the file exceeds the maximum size
+    if (newImageFile.size > MAX_FILE_SIZE) {
+      toast.error("The image exceeds the 2MB size limit");
+      return;
+    }
+
+    formData.append("image", newImageFile);
+  }
+  
+    try {
+      const response = await API.put(`/variant/${variantId}/update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Variant updated successfully");
+      setIsEditVariantModalOpen(false); // Close the modal
+      fetchProductDetails(); // Refresh the product details
+    } catch (error) {
+      toast.error("Failed to update variant");
+      console.error(error);
+    }
+  };
+
+
+  const handleDeleteVariant = async (variantId) => {
+    if (window.confirm("Are you sure you want to delete this variant?")) {
+      try {
+        await API.delete(`/variant/${variantId}/delete`);
+        toast.success("Variant deleted successfully");
+        fetchProductDetails(); // Refresh the product details
+      } catch (error) {
+        toast.error("Failed to delete variant");
+        console.error(error);
+      }
+    }
   };
 
   // Handle variant image change for multiple images
@@ -89,9 +177,13 @@ const AdminProductDetailsPage = () => {
       e.target.value = null; // Clear the file input
       return;
     }
+     
+    // Generate preview URLs
+    const previews = files.map((file) => URL.createObjectURL(file));
 
     console.log("Selected files:", files);
     setNewVariant((prev) => ({ ...prev, images: files })); // Update state with selected files
+    setVariantImagePreviews(previews);
   };
 
   // Function to upload variant images
@@ -154,6 +246,43 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
   }
 };
 
+//handle edit subvariant
+const handleEditSubVariant = async (subVariantId) => {
+  const formData = new FormData();
+  formData.append("name", selectedSubVariantForEdit.name);
+  formData.append("price", selectedSubVariantForEdit.price);
+  formData.append("stock", selectedSubVariantForEdit.stock);
+  formData.append("imagePosition", imagePosition);
+
+  if (imagePosition === "specific") {
+    formData.append("imageIndex", imageIndex);
+  }
+
+   // Append the new image file if selected
+   if (newImageFile) {
+    // Check if the file exceeds the maximum size
+    if (newImageFile.size > MAX_FILE_SIZE) {
+      toast.error("The image exceeds the 2MB size limit");
+      return;
+    }
+
+    formData.append("image", newImageFile);
+  }
+
+  try {
+    const response = await API.put(`/subVariant/${subVariantId}/update`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    toast.success("Sub-variant updated successfully");
+    setIsEditSubVariantModalOpen(false); // Close the modal
+    fetchProductDetails(); // Refresh the product details
+  } catch (error) {
+    toast.error("Failed to update sub-variant");
+    console.error(error);
+  }
+};
   // Handle subvariant image change
   const handleSubVariantImagesChange = (e) => {
     const files = Array.from(e.target.files); // Convert FileList to an array
@@ -167,8 +296,12 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
       return;
     }
 
+    // Generate preview URLs
+    const previews = files.map((file) => URL.createObjectURL(file));
+
     console.log("Selected files:", files);
     setNewSubVariant((prev) => ({ ...prev, images: files })); // Update state with selected files
+    setSubVariantImagePreviews(previews);
   };
 
   //handle the upload suvariant images
@@ -229,14 +362,22 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
     }
   };
 
-   // Handle single subvariant image change
-   const handleSubVariantImageChange = (e) => {
+  // Handle single subvariant image change
+  const handleSubVariantImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.size > MAX_FILE_SIZE) {
       toast.error("Image size should not exceed 2MB");
       e.target.value = null; // Clear the file input
       setNewSubVariant((prev) => ({ ...prev, images: null })); // Ensure image is set to null
+      setSubVariantImagePreview("");
       return;
+    }
+    // Generate preview URL
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setSubVariantImagePreview(previewUrl);
+    } else {
+      setSubVariantImagePreview("");
     }
     setNewSubVariant((prev) => ({ ...prev, images: file }));
   };
@@ -321,14 +462,22 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
     setNewVariant((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle image change for variant form
+  // Handle single image change for add variant form
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && file.size > MAX_FILE_SIZE) {
       toast.error("Image size should not exceed 2MB");
       e.target.value = null; // Clear the file input
       setNewVariant((prev) => ({ ...prev, image: null })); // Ensure image is set to null
+      setVariantImagePreview("")
       return;
+    }
+    // Generate preview URL
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setVariantImagePreview(previewUrl);
+    } else {
+      setVariantImagePreview("");
     }
     setNewVariant((prev) => ({ ...prev, image: file }));
   };
@@ -408,14 +557,42 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
     <div className="admin-product-details">
       {product && (
         <div className="product-info">
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
+          <div className="product-header">
+            <h1>{product.name}</h1>
+            <button 
+              className="edit-product-btn"
+              onClick={() => {
+                setSelectedProductForEdit(product);
+                setIsEditProductModalOpen(true);
+              }}
+            >
+              Edit Product
+            </button>
+          </div>
+          
+          <div className="product-thedetails">
+  <p>price: {product.price}</p>
+  <p>stock: {product.stock}</p>
+  <p>ratings: {product.rating}</p>
+  <p>description: {product.description}</p>
+</div>
 
+{/* Add the EditProductModal */}
+{isEditProductModalOpen && (
+        <EditProductModal
+          onClose={() => {
+            setIsEditProductModalOpen(false);
+            setSelectedProductForEdit(null);
+          }}
+          product={selectedProductForEdit}
+          updateProductitem={updateProductitem}
+        />
+      )}
           {/* Product Images Section */}
           <div className="product-images-section">
-            <h3>Product Images</h3>
+            <h2>Product Images</h2>
             <div className="images-grid">
-              {product.images.map((image, index) => (
+              {product?.images?.map((image, index) => (
                 <div key={index} className="image-item">
                   <img
                     src={image}
@@ -440,9 +617,15 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                     onChange={handleFileChange}
                     multiple
                   />
+                  {/* Display image previews */}
+      <div className="image-previews">
+        {productImagePreviews.map((preview, index) => (
+          <img key={index} src={preview} alt={`Preview ${index + 1}`} className="image-preview" />
+        ))}
+      </div>
                   <div className="button-group">
-                  <button type="submit" className="upload1-button">Upload</button>
-                  <button type="button" className="cancel1-button" onClick={() => setShowAddProductImageForm(false)}>
+                  <button type="submit" className="upload1-button" onClick={() => setProductImagePreviews([])}>Upload</button>
+                  <button type="button" className="cancel1-button" onClick={() => {setShowAddProductImageForm(false); setProductImagePreviews([]);}}>
                     Cancel
                   </button>
                   </div>
@@ -523,6 +706,12 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                   accept="image/*"
                 />
               </label>
+              {/* Display image preview */}
+      {variantImagePreview && (
+        <div className="image-preview">
+          <img src={variantImagePreview} alt="Variant Preview" className="preview-image" />
+        </div>
+      )}
               <button type="submit">Add Variant</button>
               <button type="button" onClick={() => setShowAddVariantForm(false)}>
                 Cancel
@@ -532,21 +721,22 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
         )}
 
         <div className="variants-list">
-          {/* Header Row */}
+          
+
+          {/* Variant List */}
+          {variants?.map((variant) => (
+            <div key={variant._id} className="variant-item">
+              {/* Header Row */}
           <div className="variant-header-row">
-            <div className="variant-header-item">Name</div>
+            <div className="variant-header-item">Variant Name</div>
             <div className="variant-header-item">Option</div>
             <div className="variant-header-item">Price</div>
             <div className="variant-header-item">Stock</div>
             <div className="variant-header-item">Subvariants</div>
             <div className="variant-header-item">Actions</div>
           </div>
-
-          {/* Variant List */}
-          {variants.map((variant) => (
-            <div key={variant._id} className="variant-item">
               <div className="variant-header">
-                <div className="variant-header-item">{variant.name}</div>
+                <div className="variant-header-item variant-name">{variant.name}</div>
                 <div className="variant-header-item">{variant.option}</div>
                 <div className="variant-header-item">${variant.price}</div>
                 <div className="variant-header-item">{variant.stock} in stock</div>
@@ -555,8 +745,11 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                 </div>
                 <div className="variant-header-item">
                   <div className="variant-actions">
-                    <button className="edit">Edit</button>
-                    <button className="delete">Delete</button>
+                    <button className="edit" onClick={() => {
+      setSelectedVariantForEdit(variant); // Set the selected variant
+      setIsEditVariantModalOpen(true); // Open the modal
+    }}>Edit</button>
+                    <button className="delete" onClick={() => handleDeleteVariant(variant._id)}>Delete</button>
                     <button onClick={() => toggleVariant(variant._id)} className="toggle-subvariants">
                       {expandedVariant === variant._id ? "Hide" : "Show"} Subvariants
                     </button>
@@ -564,11 +757,153 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                 </div>
               </div>
 
+              {isEditVariantModalOpen && (
+  <div className="modal-overlay12">
+    <div className="modal-content12 ">
+      <h3>Edit Variant</h3>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleEditVariant(selectedVariantForEdit._id);
+        }}
+      >
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={selectedVariantForEdit?.name || ""}
+            onChange={(e) =>
+              setSelectedVariantForEdit({
+                ...selectedVariantForEdit,
+                name: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Option:
+          <input
+            type="text"
+            name="option"
+            value={selectedVariantForEdit?.option || ""}
+            onChange={(e) =>
+              setSelectedVariantForEdit({
+                ...selectedVariantForEdit,
+                option: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Price:
+          <input
+            type="number"
+            name="price"
+            value={selectedVariantForEdit?.price || ""}
+            onChange={(e) =>
+              setSelectedVariantForEdit({
+                ...selectedVariantForEdit,
+                price: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Stock:
+          <input
+            type="number"
+            name="stock"
+            value={selectedVariantForEdit?.stock || ""}
+            onChange={(e) =>
+              setSelectedVariantForEdit({
+                ...selectedVariantForEdit,
+                stock: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Image Position:
+          <select
+            value={imagePosition}
+            onChange={(e) => setImagePosition(e.target.value)}
+          >
+            <option value="first">First</option>
+            <option value="last">Last</option>
+            <option value="specific">Specific Index</option>
+          </select>
+        </label>
+        {imagePosition === "specific" && (
+          <label>
+            Image Index:
+            <input
+              type="number"
+              value={imageIndex}
+              onChange={(e) => setImageIndex(parseInt(e.target.value))}
+              min={0}
+              max={4} // Maximum index is 4 (for 5 images)
+            />
+          </label>
+        )}
+        <label>
+          Upload New Image:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                // Check file size
+                if (file.size > MAX_FILE_SIZE) {
+                  toast.error("The image exceeds the 2MB size limit");
+                  e.target.value = null; // Clear the file input
+                  return;
+                }
+
+                // Update file name and preview
+                setFileName(file.name);
+                setPreview(URL.createObjectURL(file));
+                setNewImageFile(file);
+              }
+            }}
+          />
+        </label>
+        {/* Show file name and image preview */}
+        {fileName && (
+          <div className="file-info1">
+            <p>Selected File: {fileName}</p>
+            {preview && <img src={preview} alt="Product Preview" className="image-preview1" />}
+          </div>
+        )}
+        <div className="button-group12">
+          <button type="submit" className="save-button12">
+            Save Changes
+          </button>
+          <button
+            type="button"
+            className="cancel-button12"
+            onClick={() => setIsEditVariantModalOpen(false)}
+          >
+            Cancel
+          </button>
+          <button onClick={() => {setIsEditVariantModalOpen(false); setFileName(""); setPreview("");}}
+           className="modal-close12"
+           >Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
               {/* Variant Images Section */}
               <div className="variant-images-section">
                 <h4>Variant Images</h4>
                 <div className="images-grid">
-                  {variant.images?.map((image, index) => (
+                  {variant?.images?.map((image, index) => (
                     <div key={index} className="image-item">
                       <img
                         src={image}
@@ -581,6 +916,138 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                     </div>
                   ))}
                 </div>
+
+                {isEditSubVariantModalOpen && (
+  <div className="modal-overlay12">
+    <div className="modal-content12">
+      <h3>Edit Subvariant</h3>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleEditSubVariant(selectedSubVariantForEdit._id);
+        }}
+      >
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={selectedSubVariantForEdit?.name || ""}
+            onChange={(e) =>
+              setSelectedSubVariantForEdit({
+                ...selectedSubVariantForEdit,
+                name: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Price:
+          <input
+            type="number"
+            name="price"
+            value={selectedSubVariantForEdit?.price || ""}
+            onChange={(e) =>
+              setSelectedSubVariantForEdit({
+                ...selectedSubVariantForEdit,
+                price: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Stock:
+          <input
+            type="number"
+            name="stock"
+            value={selectedSubVariantForEdit?.stock || ""}
+            onChange={(e) =>
+              setSelectedSubVariantForEdit({
+                ...selectedSubVariantForEdit,
+                stock: e.target.value,
+              })
+            }
+            required
+          />
+        </label>
+        <label>
+          Image Position:
+          <select
+            value={imagePosition}
+            onChange={(e) => setImagePosition(e.target.value)}
+          >
+            <option value="first">First</option>
+            <option value="last">Last</option>
+            <option value="specific">Specific Index</option>
+          </select>
+        </label>
+        {imagePosition === "specific" && (
+          <label>
+            Image Index:
+            <input
+              type="number"
+              value={imageIndex}
+              onChange={(e) => setImageIndex(parseInt(e.target.value))}
+              min={0}
+              max={4} // Maximum index is 4 (for 5 images)
+            />
+          </label>
+        )}
+        <label>
+          Upload New Image:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                // Check file size
+                if (file.size > MAX_FILE_SIZE) {
+                  toast.error("The image exceeds the 2MB size limit");
+                  e.target.value = null; // Clear the file input
+                  return;
+                }
+
+                // Update file name and preview
+                setFileName(file.name);
+                setPreview(URL.createObjectURL(file));
+                setNewImageFile(file);
+              }
+            }}
+          />
+        </label>
+        {/* Show file name and image preview */}
+        {fileName && (
+          <div className="file-info">
+            <p>Selected File: {fileName}</p>
+            {preview && <img src={preview} alt="Product Preview" className="image-preview" />}
+          </div>
+        )}
+        <div className="button-group12">
+          <button type="submit" className="save-button12">
+            Save Changes
+          </button>
+          <button
+            type="button"
+            className="cancel-button12"
+            onClick={() => setIsEditSubVariantModalOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="modal-close12"
+            onClick={() =>{ setIsEditSubVariantModalOpen(false); setFileName(""); setPreview("");}}
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
                 {/* Add Variant Image Button */}
                 <button
@@ -601,15 +1068,21 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                         accept="image/*"
                         multiple
                       />
+                      {/* Display image previews */}
+      <div className="image-previews">
+        {variantImagePreviews.map((preview, index) => (
+          <img key={index} src={preview} alt={`Preview ${index + 1}`} className="image-preview" />
+        ))}
+      </div>
                       <div className="button-group">
                       <button
                         type="button"
                         className="upload1-button"
-                        onClick={() => handleAddVariantImages(variant._id)}
+                        onClick={() => {handleAddVariantImages(variant._id); setVariantImagePreviews([]);}}
                       >
                         Upload
                       </button>
-                      <button type="button" className="cancel1-button" onClick={() => setShowAddVariantImageForm(false)}>
+                      <button type="button" className="cancel1-button" onClick={() => {setShowAddVariantImageForm(false); setVariantImagePreviews([]);}}>
                         Cancel
                       </button>
                       </div>
@@ -622,27 +1095,34 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
               {/* Subvariants Section */}
               {expandedVariant === variant._id && (
                 <div className="subvariants-section">
-                  {/* Subvariants Header Row */}
-                  <div className="subvariant-header-row">
-                  <div className="subvariant-header-item">VariantName</div>
-                    <div className="subvariant-header-item">Name</div>
-                    <div className="subvariant-header-item">Price</div>
-                    <div className="subvariant-header-item">Stock</div>
-                    <div className="subvariant-header-item">Actions</div>
-                  </div>
+                
 
                   {/* Subvariants List */}
-                  {variant.subVariants?.map((subVariant) => (
+                  {variant?.subVariants?.map((subVariant) => (
                     <div key={subVariant._id} className="subvariant-item">
+                       {/* Subvariant Header Row */}
+        <div className="subvariant-header-row">
+          <div className="subvariant-header-item ">Variant name</div>
+          <div className="subvariant-header-item">Subvariant name</div>
+          <div className="subvariant-header-item">Price</div>
+          <div className="subvariant-header-item">Stock</div>
+          <div className="subvariant-header-item">Actions</div>
+        </div>
                       {/* Subvariant Details */}
     <div className="subvariant-details">
-    <div className="subvariant-header-item">{variant.name}</div>
+    <div className="subvariant-header-item variant-name">{variant.name}</div>
       <div className="subvariant-header-item">{subVariant.name}</div>
       <div className="subvariant-header-item">${subVariant.price}</div>
       <div className="subvariant-header-item">{subVariant.stock} in stock</div>
       <div className="subvariant-header-item">
         <div className="subvariant-actions">
-          <button className="edit">Edit</button>
+          <button 
+            className="edit"
+            onClick={() => {
+              setSelectedSubVariantForEdit(subVariant); // Set the selected subvariant
+              setIsEditSubVariantModalOpen(true); // Open the modal
+            }}
+          >Edit</button>
           <button className="delete">Delete</button>
         </div>
       </div>
@@ -652,7 +1132,7 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                       <div className="subvariant-images-section">
                         <h4>Subvariant Images</h4>
                         <div className="images-grid">
-                          {subVariant.images?.map((image, index) => (
+                          {subVariant?.images?.map((image, index) => (
                             <div key={index} className="image-item">
                               <img
                                 src={image}
@@ -685,9 +1165,15 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                                 accept="image/*"
                                 multiple
                               />
+                              {/* Display image previews */}
+      <div className="image-previews">
+        {subVariantImagePreviews.map((preview, index) => (
+          <img key={index} src={preview} alt={`Preview ${index + 1}`} className="image-preview" />
+        ))}
+      </div>
                               <div className="button-group">
-                              <button type="button"  className="upload1-button" onClick={() => handleAddSubVariantImages(subVariant._id)}>Upload</button>
-                              <button type="button" className="cancel1-button" onClick={() => setShowAddSubVariantImageForm(false)}>
+                              <button type="button"  className="upload1-button" onClick={() => {handleAddSubVariantImages(subVariant._id); setSubVariantImagePreviews([]);}}>Upload</button>
+                              <button type="button" className="cancel1-button" onClick={() => {setShowAddSubVariantImageForm(false); setSubVariantImagePreviews([]);}}>
                                 Cancel
                               </button>
                               </div>
@@ -753,6 +1239,12 @@ const handleDeleteVariantImage = async (variantId, imageIndex) => {
                             accept="image/*"
                           />
                         </label>
+                        {/* Display image preview */}
+      {subVariantImagePreview && (
+        <div className="image-preview">
+          <img src={subVariantImagePreview} alt="Subvariant Preview" className="preview-image" />
+        </div>
+      )}
                         <button type="submit">Add Subvariant</button>
                         <button type="button" onClick={() => setShowAddSubVariantForm(false)}>
                           Cancel

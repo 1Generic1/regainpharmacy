@@ -11,7 +11,7 @@ const EditAddProductModal = ({ onClose, refreshProductList }) => {
     name: '',
     price: '',
     category: '',
-    quantity: '',
+    stock: '',
     description: '',
     rating: '', 
   });
@@ -55,8 +55,8 @@ const EditAddProductModal = ({ onClose, refreshProductList }) => {
     const file = e.target.files[0];
     if (file) {
       // Check file size (1MB = 1024 * 1024 bytes)
-      if (file.size > 1024 * 1024) {
-        setUploadError('File size should be less than 1MB'); // Notify user
+      if (file.size > 2 * 1024 * 1024) {
+        setUploadError('File size should be less than 2MB'); // Notify user
         setImageFile(null); // Reset the image file
         setFileName(''); // Clear the filename
         setPreview(''); // Clear the preview

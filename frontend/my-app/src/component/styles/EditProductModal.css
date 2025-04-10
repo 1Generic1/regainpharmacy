@@ -1,0 +1,281 @@
+/* EditProductModal.css */
+.edit-product-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    z-index: 1000;
+    animation: modalFadeIn 0.3s ease-out;
+  }
+  
+  .edit-product-modal h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .edit-product-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  .pim-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+
+  .pim-input-group input,
+  .pim-input-group textarea {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: #f9f9f9;
+  }
+  
+  .pim-input-group input:focus,
+  .pim-input-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    background-color: #fff;
+  }
+  
+  .pim-input-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .file-upload-container {
+    margin: -20px;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .file-input-label {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    margin-bottom: 1rem;
+    width: 95%;
+  }
+  
+  .file-input-label:hover {
+    background-color: #2980b9;
+  }
+  
+  .file-info {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+  }
+  
+  .file-info p {
+    margin-bottom: 0.5rem;
+    color: #555;
+  }
+  
+  .image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-top: 0.5rem;
+  }
+  
+  .position-selector {
+    margin: 10px 0;
+    width: 95%;
+    border-radius:'5px';
+
+  }
+  
+  .position-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .index-input {
+    margin-top: 1rem;
+  }
+  
+  .index-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .index-input input {
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 60px;
+  }
+  
+  .personalinfo-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .pim-save-btn {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .pim-save-btn:hover {
+    background-color: #27ae60;
+  }
+  
+  .pim-cancel-btn {
+    flex: 1;
+    padding: 0.8rem;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .pim-cancel-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .success-message {
+    color: #2ecc71;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  
+  /* React Select overrides */
+  .position-select {
+    margin-bottom: 1rem;
+  }
+
+  .pim-input-group textarea {
+  /* Basic styling */
+  width: 95%;
+  min-height: 120px;
+  max-height: 300px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  margin: 8px 0 4px 0;
+  
+  /* Scrollbar styling (for webkit browsers) */
+  scrollbar-width: thin;
+  scrollbar-color: #3498db #f1f1f1;
+}
+
+.pim-input-group textarea:hover {
+  border-color: #b3b3b3;
+}
+
+.pim-input-group textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  background-color: #fff;
+}
+
+/* Webkit scrollbar styling */
+.pim-input-group textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pim-input-group textarea::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.pim-input-group textarea::-webkit-scrollbar-thumb {
+  background-color: #3498db;
+  border-radius: 4px;
+}
+  
+  /* Animation */
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -40%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  /* Backdrop */
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .edit-product-modal {
+      width: 95%;
+      padding: 1.5rem;
+    }
+    
+    .personalinfo-buttons {
+      flex-direction: column;
+    }
+  }

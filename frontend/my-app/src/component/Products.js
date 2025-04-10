@@ -170,7 +170,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/products/all_products'); // Adjust URL if needed
-        const inStockProducts = response.data.docs.filter(product => product.quantity > 0);
+        const inStockProducts = response.data.docs.filter(product => product.stock > 0);
         setProducts(inStockProducts); // Assuming 'docs' contains paginated product data
         setLoading(false);
       } catch (err) {

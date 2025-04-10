@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import './styles/EditProductModal.css';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import { toast } from "react-toastify";
+import API from "../api/api";
 
 
 const EditProductModal = ({ onClose, product, updateProductitem }) => {
@@ -10,10 +11,12 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
     name: product.name, 
     price: product.price,
     category: product.category,
-    quantity: product.quantity,
+    stock: product.stock,
     description: product.description,
     rating: product.rating,
     image: null, // Still handling image separately
+    imagePosition: 'last', // Default position
+    imageIndex: 0, // Default index
 });
 
   const [successMessage, setSuccessMessage] = useState(''); // State for success message
@@ -28,11 +31,7 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
-        const response = await axios.get('http://localhost:3001/api/categories/all_categories', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await API.get('categories/all_categories');
         setCategories(response.data); // Set the categories in state
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -57,8 +56,8 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
     const file = e.target.files[0];
     if (file) {
       // Check file size (1MB = 1024 * 1024 bytes)
-      if (file.size > 1024 * 1024) {
-        setUploadError('File size should be less than 1MB'); // Notify user
+      if (file.size > 2 * 1024 * 1024) {
+        setUploadError('File size should be less than 2MB'); // Notify user
         setImageFile(null); // Reset the image file
         setFileName(''); // Clear the filename
         setPreview(''); // Clear the preview
@@ -94,43 +93,57 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
       updatedData.append('name', formData.name);
       updatedData.append('price', formData.price);
       updatedData.append('category', formData.category);
-      updatedData.append('quantity', formData.quantity);
+      updatedData.append('stock', formData.stock);
       updatedData.append('description', formData.description);
       updatedData.append('rating', formData.rating); // Include rating
+
+      // Add image position data
+      updatedData.append('imagePosition', formData.imagePosition);
+      if (formData.imagePosition === 'specific') {
+        updatedData.append('imageIndex', formData.imageIndex);
+      }
       if (imageFile) { // Only append the image if it exists
         updatedData.append('image', imageFile);
       }
 
       // Send updated product data to the backend
-      const response = await axios.put(`http://localhost:3001/api/products/${product._id}`, updatedData, {
+      const response = await API.put(`/products/${product._id}`, updatedData, {
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data', // Ensure the image is handled properly
         },
       });
 
+    // Ensure variants are preserved in the response
+    const updatedProduct = {
+      ...response.data,
+      variants: response.data.variants || product.variants || []
+    };
       // Update the product in the parent list
-      updateProductitem(response.data);
+      updateProductitem(updatedProduct);
+      // Show success toast
+      toast.success('Product updated successfully!');
       setSuccessMessage('Product updated successfully!');
       setUploadError('');
       setTimeout(() => {
         setSuccessMessage(''); // Clear the message after a few seconds
         window.location.reload(); //reload the parent page
         onClose(); // Close the modal after saving
-      }, 2000);
+      }, 1000);
     } catch (error) {
       // Axios provides the response data in error.response
+      // Show error toast
       if (error.response) {
-        // Extract and display the error message from the backend
-        //alert(error.response.data.error);  // This should display your specific backend error
+        toast.error(error.response.data.error || 'Failed to update product');
         setUploadError(error.response.data.error);
+      } else if (error.request) {
+        toast.error('Network error. Please try again.');
       } else {
-        // If there is no response (like network issues)
-        alert('Something went wrong');
+        toast.error('An unexpected error occurred');
       }
+      console.error('Update error:', error);
     }
   };
-
+    
   
   
 
@@ -140,6 +153,33 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
     setUploadError('');
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+   // Add position options
+   const positionOptions = [
+    { value: 'first', label: 'First position' },
+    { value: 'last', label: 'Last position' },
+    { value: 'specific', label: 'Specific position' },
+  ];
+
+  // Update form data when position changes
+    const handlePositionChange = (selectedOption) => {
+      setFormData({
+        ...formData,
+        imagePosition: selectedOption.value,
+        // Reset index when position changes
+        imageIndex: selectedOption.value === 'specific' ? formData.imageIndex : 0
+      });
+    };
+  
+  // Update form data when index changes
+    const handleIndexChange = (e) => {
+      setFormData({
+        ...formData,
+        imageIndex: parseInt(e.target.value) || 0
+      });
+    };
+
+
   return (
     <div className="edit-product-modal">
       <h2>Edit Product</h2>
@@ -180,6 +220,8 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
           ...provided,
           padding: '4px',
           minHeight: '40px',
+          width: '95%',
+          borderRadius:'5px',
           borderColor: state.isFocused ? '#4CAF50' : '#ccc',
           backgroundColor: 'white',
           textAlign: 'left',
@@ -219,9 +261,9 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
         <div className="pim-input-group">
           <input
             type="number"
-            name="quantity"
-            placeholder="Quantity"
-            value={formData.quantity}
+            name="stock"
+            placeholder="Stock"
+            value={formData.stock}
             onChange={handleInputChange}
             required
           />
@@ -239,8 +281,9 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
       styles={{
         control: (provided, state) => ({
           ...provided,
-          padding: '1px',
-          minHeight: '40px',
+          minHeight: '20px',
+          maxHeight: '50px',
+          width: '95%',
           borderColor: state.isFocused ? '#4CAF50' : '#ccc',
           backgroundColor: 'white',
           textAlign: 'left',
@@ -251,7 +294,7 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
         }),
         valueContainer: (provided) => ({
           ...provided,
-          padding: '5px 10px',
+          padding: '0px 8px',
         }),
         singleValue: (provided) => ({
           ...provided,
@@ -276,7 +319,63 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
         }),
       }}
     />
+       
+
+       {/* Image position selection */}
+       <div className="position-selector">
+            <label>Image Position:</label>
+            <Select
+              value={positionOptions.find(opt => opt.value === formData.imagePosition)}
+              onChange={handlePositionChange}
+              options={positionOptions}
+              styles={{
+                control: (provided) => ({
+                  ...provided,
+                  minHeight: '45px',  // Increase height
+                  height: '50px',
+                  fontSize: '16px',   // Optional: increase font size
+                }),
+                indicatorsContainer: (provided) => ({
+                  ...provided,
+                  height: '45px',
+                }),
+                valueContainer: (provided) => ({
+                  ...provided,
+                  height: '45px',
+                  padding: '0 8px',
+                }),
+                option: (provided) => ({
+                  ...provided,
+                  padding: '10px 12px',  // Increase option padding
+                })
+              }}
+
+            />
+            
+            {/* Show index input only when specific position is selected */}
+            {formData.imagePosition === 'specific' && (
+              <div className="index-input">
+                <label>Position Index:</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={4} // Maximum index is 4 (for 5 images)
+                  value={formData.imageIndex}
+                  onChange={handleIndexChange}
+                />
+              </div>
+            )}
+          </div>
+
+      {/* Show file name and image preview */}
+      {fileName && (
+        <div className="file-info">
+          <p>Selected File: {fileName}</p>
+          {preview && <img src={preview} alt="Product Preview" className="image-preview" />}
         </div>
+      )}
+
+</div>
         {/* File upload for product image */}
       <div className="file-upload-container">
         <input
@@ -288,14 +387,6 @@ const EditProductModal = ({ onClose, product, updateProductitem }) => {
           
         />
       </div>
-
-      {/* Show file name and image preview */}
-      {fileName && (
-        <div className="file-info">
-          <p>Selected File: {fileName}</p>
-          {preview && <img src={preview} alt="Product Preview" className="image-preview" />}
-        </div>
-      )}
         <label className="file-input-label" htmlFor="file-upload">
           Update Product Picture
         </label>

@@ -99,3 +99,23 @@
   border-radius: 8px; /* Rounded corners */
   margin-bottom: 20px; /* Space between image and button */
 }
+
+.image-navigation {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.navigation-button {
+  background: none;
+  border: none;
+  color: #333; /* Icon color */
+  font-size: 24px; /* Icon size */
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.navigation-button:disabled {
+  color: #ccc; /* Disabled icon color */
+  cursor: not-allowed;
+}

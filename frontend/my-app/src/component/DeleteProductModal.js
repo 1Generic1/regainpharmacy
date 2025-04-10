@@ -1,6 +1,8 @@
 import React from 'react';
 import './styles/DeleteProductModal.css'; 
+
 const DeleteProductModal = ({ productToDelete, onDelete, onClose }) => {
+  
   return (
     <div className="delete-modal-overlay">
       <div className="delete-modal-content">
